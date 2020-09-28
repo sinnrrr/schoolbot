@@ -19,7 +19,7 @@ async fn run() {
     dotenv().ok();
 
     teloxide::enable_logging!();
-    log::info!("Starting bot...");
+    log::info!("Launching...");
 
     let bot = Bot::from_env();
 
@@ -41,6 +41,7 @@ async fn handle_rejection(error: warp::Rejection) -> Result<impl warp::Reply, In
 
 pub async fn webhook<'a>(bot: Bot) -> impl update_listeners::UpdateListener<Infallible> {
     let url = format!("https://{}/bot{}", dotenv!("HOST"), dotenv!("TELOXIDE_TOKEN"));
+    print!(std::env!("PORT"));
 
     bot.set_webhook(url).send().await.expect("Cannot setup a webhook");
 
@@ -74,5 +75,7 @@ pub async fn webhook<'a>(bot: Bot) -> impl update_listeners::UpdateListener<Infa
     let address = format!("0.0.0.0:{}", dotenv!("PORT"));
 
     tokio::spawn(serve.run(address.parse::<SocketAddr>().unwrap()));
+    log::info!("Bot started on {} port", dotenv!("PORT"));
+
     rx
 }
