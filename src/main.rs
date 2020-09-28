@@ -40,8 +40,9 @@ async fn handle_rejection(error: warp::Rejection) -> Result<impl warp::Reply, In
 }
 
 pub async fn webhook<'a>(bot: Bot) -> impl update_listeners::UpdateListener<Infallible> {
-    let url = format!("https://{}/bot{}", dotenv!("HOST"), dotenv!("TELOXIDE_TOKEN"));
-    print!(std::env!("PORT"));
+    let host = env::var("HOST").expect("HOST variable is not specified");
+    let token = env::var("TELOXIDE_TOKEN").expect("TELOXIDE_TOKEN variable is not specified");
+    let url = format!("https://{}/bot{}", host, token);
 
     bot.set_webhook(url).send().await.expect("Cannot setup a webhook");
 
