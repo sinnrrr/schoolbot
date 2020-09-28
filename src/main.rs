@@ -1,6 +1,4 @@
-#[macro_use]
-extern crate dotenv_codegen;
-
+use envmnt;
 use dotenv::dotenv;
 use teloxide::{dispatching::update_listeners, prelude::*};
 
@@ -40,16 +38,19 @@ async fn handle_rejection(error: warp::Rejection) -> Result<impl warp::Reply, In
 }
 
 pub async fn webhook<'a>(bot: Bot) -> impl update_listeners::UpdateListener<Infallible> {
-    let host = env::var("HOST").expect("HOST variable is not specified");
-    let token = env::var("TELOXIDE_TOKEN").expect("TELOXIDE_TOKEN variable is not specified");
-    let url = format!("https://{}/bot{}", host, token);
+    let host = envmnt::get_or_panic("HOST");
+    let port = envmnt::get_or("PORT", "1324");
+    let token = envmnt::get_or_panic("TELOXIDE_TOKEN");
+    
+    let path = format!("bot{}", &token);
+    let url = format!("https://{}/{}", &host, path);
 
     bot.set_webhook(url).send().await.expect("Cannot setup a webhook");
 
     let (tx, rx) = mpsc::unbounded_channel();
 
     let server = warp::post()
-        .and(warp::path(format!("bot{}", dotenv!("TELOXIDE_TOKEN"))))
+        .and(warp::path(path))
         .and(warp::body::json())
         .map(move |json: serde_json::Value| {
             let try_parse = match serde_json::from_str(&json.to_string()) {
@@ -73,10 +74,10 @@ pub async fn webhook<'a>(bot: Bot) -> impl update_listeners::UpdateListener<Infa
         }).recover(handle_rejection);
 
     let serve = warp::serve(server);
-    let address = format!("0.0.0.0:{}", dotenv!("PORT"));
+    let address = format!("0.0.0.0:{}", &port);
 
     tokio::spawn(serve.run(address.parse::<SocketAddr>().unwrap()));
-    log::info!("Bot started on {} port", dotenv!("PORT"));
+    log::info!("Bot started on {} port", &port);
 
     rx
 }
