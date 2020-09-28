@@ -1216,7 +1216,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "schoolbot"
+name = "schooltimesheet"
 version = "0.1.0"
 dependencies = [
  "dotenv",
