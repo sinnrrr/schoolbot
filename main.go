@@ -8,10 +8,11 @@ import (
 
 func main() {
 	bot, err := tb.NewBot(config.BotSettings)
-
 	if err != nil {
 		panic(err)
 	}
+
+	println(bot)
 
 	bot.Handle("/hello", func(msg *tb.Message) {
 		bot.Send(msg.Sender, "Hello world")
