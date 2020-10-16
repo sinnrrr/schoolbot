@@ -9,7 +9,7 @@ var (
 	BotWebhook = &tb.Webhook{
 		Listen: ":" + os.Getenv("PORT"),
 		Endpoint: &tb.WebhookEndpoint{
-			PublicURL: "https://" + os.Getenv("PUBLIC_URL"),
+			PublicURL: "https://" + os.Getenv("PUBLIC_URL") + "/",
 		},
 	}
 
