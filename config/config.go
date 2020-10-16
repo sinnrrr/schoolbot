@@ -3,13 +3,18 @@ package config
 import (
 	tb "gopkg.in/tucnak/telebot.v2"
 	"os"
-	"time"
 )
 
 var (
+	BotWebhook = &tb.Webhook{
+		Listen: ":" + os.Getenv("PORT"),
+		Endpoint: &tb.WebhookEndpoint{
+			PublicURL: os.Getenv("PUBLIC_URL"),
+		},
+	}
+
 	BotSettings = tb.Settings{
-		URL: "https://" + os.Getenv("HOST"),
 		Token: os.Getenv("BOT_TOKEN"),
-		Poller: &tb.LongPoller{Timeout: 10 * time.Second},
+		Poller: BotWebhook,
 	}
 )
