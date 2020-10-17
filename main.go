@@ -12,10 +12,9 @@ func main() {
 		panic(err)
 	}
 
-	println(bot)
-
 	bot.Handle("/hello", func(msg *tb.Message) {
-		bot.Send(msg.Sender, "Hello world")
+		message, err := bot.Send(msg.Sender, "Hello world")
+		println(message, err)
 	})
 
 	bot.Start()
