@@ -12,9 +12,23 @@ func main() {
 		panic(err)
 	}
 
-	bot.Handle("/hello", func(msg *tb.Message) {
-		message, err := bot.Send(msg.Sender, "Hello world")
-		println(message, err)
+	bot.Handle(tb.OnAddedToGroup, func(m *tb.Message) {
+		bot.Send(
+			m.Chat,
+			"Invite",
+			&tb.ReplyMarkup{InlineKeyboard: personalInviteKeys},
+		)
+	})
+
+	bot.Handle("/start", func(m *tb.Message) {
+		if m.Private() {
+			if m.Payload != "" {
+				RegisterMenu(bot)
+				bot.Send(m.Sender, "Hello", menu)
+			} else {
+				bot.Send(m.Sender, "Add me to group", &tb.ReplyMarkup{InlineKeyboard: groupInviteKeys})
+			}
+		}
 	})
 
 	bot.Start()
