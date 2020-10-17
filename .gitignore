@@ -1,4 +1,6 @@
-__pycache__
-*.session*
 .idea
 .env
+
+*.session*
+
+__pycache__
