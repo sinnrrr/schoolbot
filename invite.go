@@ -10,9 +10,9 @@ var (
 	}
 
 	groupInviteButton = tb.InlineButton{
-		Text: "Add to group",
+		Text:   "Add to group",
 		Unique: "groupInvite",
-		URL: "http://t.me/schoolhelperTheBot?startgroup=true",
+		URL:    "http://t.me/schoolhelperTheBot?startgroup=true",
 	}
 
 	personalInviteKeys = [][]tb.InlineButton{
