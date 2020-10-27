@@ -31,8 +31,10 @@ func main() {
 	registerKeyboard()
 	registerInlineKeyboard()
 
-	handleStartCommand()
 	handleOnAddedEvent()
+
+	handleStartCommand()
+	handleHomeworkCommand()
 
 	println("Websocket has been set up on", os.Getenv("PUBLIC_URL"))
 	println("Bot has been started on port", os.Getenv("PORT"))

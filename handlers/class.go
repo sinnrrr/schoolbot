@@ -1,16 +1,11 @@
-package models
+package handlers
 
 import (
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"github.com/sinnrrr/schoolbot/db"
 )
 
-type Class struct {
-	ID   int64 `json:"id"`
-	Name string `json:"name"`
-}
-
-func (Class) Create(id int64, name string) (neo4j.Node, error) {
+func CreateClass(id int64, name string) (neo4j.Node, error) {
 	var class neo4j.Node
 
 	result, err := db.Session.Run(

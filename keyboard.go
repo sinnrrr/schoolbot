@@ -7,6 +7,7 @@ import (
 var (
 	keyboard = &tb.ReplyMarkup{ResizeReplyKeyboard: true}
 
+	newButton       = keyboard.Text("New")
 	homeworkButton  = keyboard.Text("Homework")
 	timesheetButton = keyboard.Text("Timesheet")
 	alertButton     = keyboard.Text("Alert")
@@ -15,14 +16,25 @@ var (
 
 func registerKeyboard() {
 	keyboard.Reply(
+		keyboard.Row(newButton),
 		keyboard.Row(homeworkButton, timesheetButton),
 		keyboard.Row(alertButton, settingsButton),
 	)
 
+	bot.Handle(&newButton, newButtonHandler)
 	bot.Handle(&homeworkButton, homeworkButtonHandler)
 	bot.Handle(&timesheetButton, timesheetButtonHandler)
 	bot.Handle(&alertButton, alertButtonHandler)
 	bot.Handle(&settingsButton, settingsButtonHandler)
+}
+
+func newButtonHandler(m *tb.Message) {
+	handleSendError(
+		bot.Send(
+			m.Chat,
+			"Handled new button",
+		),
+	)
 }
 
 func homeworkButtonHandler(m *tb.Message) {

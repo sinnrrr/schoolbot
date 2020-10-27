@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"github.com/sinnrrr/schoolbot/models"
+	"github.com/sinnrrr/schoolbot/handlers"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"strconv"
 )
@@ -16,7 +15,7 @@ func handleStartCommand() {
 					panic(err)
 				}
 
-				node, err := models.Student{}.Create(m.Sender, classID)
+				node, err := handlers.CreateStudent(m.Sender, classID)
 				if err != nil {
 					panic(err)
 				}
@@ -53,7 +52,6 @@ func handleStartCommand() {
 				bot.Send(
 					m.Chat,
 					"Hello, how can I help in your group?",
-					keyboard,
 				),
 			)
 		}
@@ -62,21 +60,29 @@ func handleStartCommand() {
 
 func handleOnAddedEvent() {
 	bot.Handle(tb.OnAddedToGroup, func(m *tb.Message) {
-		node, err := models.Class{}.Create(m.Chat.ID, m.Chat.Title)
+		node, err := handlers.CreateClass(m.Chat.ID, m.Chat.Title)
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Println(node.Props())
-
-		handleSendError(
-			bot.Send(
-				m.Chat,
-				"Invite to your personal chat",
-				&tb.ReplyMarkup{
-					InlineKeyboard: generatePersonalInviteKeys(m.Chat.ID),
-				},
-			))
+		if node == nil {
+			handleSendError(
+				bot.Send(
+					m.Chat,
+					"Your group have already records in our database",
+				),
+			)
+		} else {
+			handleSendError(
+				bot.Send(
+					m.Chat,
+					"Invite to your personal chat",
+					&tb.ReplyMarkup{
+						InlineKeyboard: generatePersonalInviteKeys(m.Chat.ID),
+					},
+				),
+			)
+		}
 	})
 }
 
