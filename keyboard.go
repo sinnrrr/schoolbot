@@ -26,7 +26,7 @@ func registerKeyboard() {
 }
 
 func homeworkButtonHandler(m *tb.Message) {
-	handleBotError(
+	handleSendError(
 		bot.Send(
 			m.Chat,
 			"Handled homework button",
@@ -38,7 +38,7 @@ func homeworkButtonHandler(m *tb.Message) {
 }
 
 func timesheetButtonHandler(m *tb.Message) {
-	handleBotError(
+	handleSendError(
 		bot.Send(
 			m.Chat,
 			"Handled timesheet button",
@@ -47,7 +47,7 @@ func timesheetButtonHandler(m *tb.Message) {
 }
 
 func alertButtonHandler(m *tb.Message) {
-	handleBotError(
+	handleSendError(
 		bot.Send(
 			m.Chat,
 			"Handled alert button",
@@ -56,7 +56,7 @@ func alertButtonHandler(m *tb.Message) {
 }
 
 func settingsButtonHandler(m *tb.Message) {
-	handleBotError(
+	handleSendError(
 		bot.Send(
 			m.Chat,
 			"Handled settings button",

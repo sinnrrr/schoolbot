@@ -1,3 +1,5 @@
+github.com/afdalwahyu/gonnel v0.0.0-20180224174010-836c5bd3cd9b h1:dAcyHW3J6zVi4+4KaHTANZAUXMhIUOpGkgqBQF++qkk=
+github.com/afdalwahyu/gonnel v0.0.0-20180224174010-836c5bd3cd9b/go.mod h1:rA5DHguHWqHvyeBAglw0EZ0ddwuCJyUtmq37q6q39h8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

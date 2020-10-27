@@ -1,20 +1,44 @@
 package main
 
-import tb "gopkg.in/tucnak/telebot.v2"
+import (
+	"fmt"
+	"github.com/sinnrrr/schoolbot/models"
+	tb "gopkg.in/tucnak/telebot.v2"
+	"strconv"
+)
 
 func handleStartCommand() {
 	bot.Handle("/start", func(m *tb.Message) {
 		if m.Private() {
 			if m.Payload != "" {
-				handleBotError(
-					bot.Send(
-						m.Chat,
-						"Hello, how can I help?",
-						keyboard,
-					),
-				)
+				classID, err := strconv.ParseInt(m.Payload, 10, 64)
+				if err != nil {
+					panic(err)
+				}
+
+				node, err := models.Student{}.Create(m.Sender, classID)
+				if err != nil {
+					panic(err)
+				}
+
+				if node == nil {
+					handleSendError(
+						bot.Send(
+							m.Sender,
+							"You have already accepted the invite from this group",
+						),
+					)
+				} else {
+					handleSendError(
+						bot.Send(
+							m.Chat,
+							"Hello, how can I help?",
+							keyboard,
+						),
+					)
+				}
 			} else {
-				handleBotError(
+				handleSendError(
 					bot.Send(
 						m.Chat,
 						"To get started, please, add me to group",
@@ -25,10 +49,10 @@ func handleStartCommand() {
 				)
 			}
 		} else {
-			handleBotError(
+			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Hello, how can I help?",
+					"Hello, how can I help in your group?",
 					keyboard,
 				),
 			)
@@ -38,18 +62,25 @@ func handleStartCommand() {
 
 func handleOnAddedEvent() {
 	bot.Handle(tb.OnAddedToGroup, func(m *tb.Message) {
-		handleBotError(
+		node, err := models.Class{}.Create(m.Chat.ID, m.Chat.Title)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println(node.Props())
+
+		handleSendError(
 			bot.Send(
 				m.Chat,
 				"Invite to your personal chat",
 				&tb.ReplyMarkup{
-					InlineKeyboard: personalInviteKeys,
+					InlineKeyboard: generatePersonalInviteKeys(m.Chat.ID),
 				},
 			))
 	})
 }
 
-func handleBotError(m *tb.Message, err error) {
+func handleSendError(m *tb.Message, err error) {
 	if err != nil {
 		panic(err)
 	}

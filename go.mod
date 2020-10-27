@@ -5,6 +5,7 @@ go 1.15
 // +heroku goVersion go1.15
 
 require (
+	github.com/afdalwahyu/gonnel v0.0.0-20180224174010-836c5bd3cd9b
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/mattn/go-sqlite3 v1.14.4 // indirect

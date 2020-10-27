@@ -1,25 +1,32 @@
 package main
 
-import tb "gopkg.in/tucnak/telebot.v2"
+import (
+	tb "gopkg.in/tucnak/telebot.v2"
+	"strconv"
+)
 
 var (
 	personalInviteButton = tb.InlineButton{
-		Text:   "Go",
 		Unique: "personInvite",
-		URL:    "http://t.me/schoolhelperTheBot/?start=1432",
+		Text:   "Go to personal chat",
+		URL:    "http://t.me/schoolhelperTheBot/?start=",
 	}
 
 	groupInviteButton = tb.InlineButton{
-		Text:   "Add to group",
 		Unique: "groupInvite",
+		Text:   "Add to group",
 		URL:    "http://t.me/schoolhelperTheBot?startgroup=true",
-	}
-
-	personalInviteKeys = [][]tb.InlineButton{
-		{personalInviteButton},
 	}
 
 	groupInviteKeys = [][]tb.InlineButton{
 		{groupInviteButton},
 	}
 )
+
+func generatePersonalInviteKeys(groupID int64) [][]tb.InlineButton {
+	personalInviteButton.URL += strconv.FormatInt(groupID, 10)
+
+	return [][]tb.InlineButton{
+		{personalInviteButton},
+	}
+}

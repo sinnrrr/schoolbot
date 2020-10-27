@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
@@ -23,9 +22,7 @@ func registerInlineKeyboard() {
 }
 
 func updateInlineButtonHandler(c *tb.Callback) {
-	fmt.Println(c.Data)
-
-	handleBotError(
+	handleSendError(
 		bot.Send(
 			c.Sender,
 			"Handled update inline button with data:",
@@ -34,7 +31,7 @@ func updateInlineButtonHandler(c *tb.Callback) {
 }
 
 func deleteInlineButtonHandler(c *tb.Callback) {
-	handleBotError(
+	handleSendError(
 		bot.Send(
 			c.Sender,
 			"Handled delete inline button with data:",

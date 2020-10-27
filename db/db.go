@@ -12,16 +12,12 @@ var (
 	Session neo4j.Session
 )
 
-func Init() {
-	Driver, err = neo4j.NewDriver(config.URI, config.Auth, config.DB(neo4j.INFO))
+func Init() error {
+	Driver, err = neo4j.NewDriver(config.URI, config.Auth, config.DB())
 	if err != nil {
-		panic(err)
+		return err
 	}
-	defer Driver.Close()
 
 	Session, err = Driver.NewSession(config.Session)
-	if err != nil {
-		panic(err)
-	}
-	defer Session.Close()
+	return err
 }
