@@ -46,7 +46,7 @@ func homeworkButtonHandler(m *tb.Message) {
 			m.Chat,
 			"Handled homework button",
 			&tb.ReplyMarkup{
-				InlineKeyboard: generateActionsInlineKeyboard("432"),
+				InlineKeyboard: generateActionsInlineKeyboard(432),
 			},
 		),
 	)

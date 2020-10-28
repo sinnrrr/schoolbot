@@ -30,6 +30,7 @@ func main() {
 	registerKeyboard()
 	registerInlineKeyboard()
 
+	handleOnTextEvent()
 	handleOnAddedEvent()
 
 	handleStartCommand()

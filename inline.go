@@ -3,31 +3,33 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/sinnrrr/schoolbot/handlers"
 	tb "gopkg.in/tucnak/telebot.v2"
+	"strconv"
 )
 
 var (
 	data struct {
-		ID     string
-		Name   string
-		Action string
+		ID     int
+		Action int8
+		Day    int8
 	}
 
 	homeworkInlineButton = tb.InlineButton{
+		Data:   "1",
 		Unique: "homework",
-		Data:   "homework",
 		Text:   "Homework",
 	}
 
 	timetableInlineButton = tb.InlineButton{
+		Data:   "2",
 		Unique: "timetable",
-		Data:   "timetable",
 		Text:   "Timetable",
 	}
 
 	alertInlineButton = tb.InlineButton{
+		Data:   "3",
 		Unique: "alert",
-		Data:   "alert",
 		Text:   "Alert",
 	}
 
@@ -77,10 +79,10 @@ var (
 		{alertInlineButton},
 	}
 
-	weekdayBackInlineButton = tb.InlineButton{
-		Unique: "back",
-		Text:   "Back",
-	}
+	//weekdayBackInlineButton = tb.InlineButton{
+	//	Unique: "back",
+	//	Text:   "Back",
+	//}
 )
 
 func registerInlineKeyboard() {
@@ -90,7 +92,7 @@ func registerInlineKeyboard() {
 	bot.Handle(&homeworkInlineButton, operationInlineButtonHandler)
 	bot.Handle(&timetableInlineButton, operationInlineButtonHandler)
 	bot.Handle(&alertInlineButton, operationInlineButtonHandler)
-	bot.Handle(&weekdayBackInlineButton, operationInlineButtonHandler)
+	//bot.Handle(&weekdayBackInlineButton, operationInlineButtonHandler)
 
 	bot.Handle(&mondayInlineButton, weekdayInlineButtonHandler)
 	bot.Handle(&tuesdayInlineButton, weekdayInlineButtonHandler)
@@ -117,9 +119,9 @@ func actionInlineButtonHandler(c *tb.Callback) {
 		bot.Send(
 			c.Sender,
 			"Handled action "+
-				data.Action+
+				strconv.Itoa(int(data.Action))+
 				" with ID "+
-				data.ID,
+				string(rune(data.ID)),
 		),
 	)
 }
@@ -149,6 +151,12 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 		panic(err)
 	}
 
+	homework["day"] = data.Day
+	err = handlers.SetDialogueState(c.Sender.ID, SubjectRequest)
+	if err != nil {
+		panic(err)
+	}
+
 	err = bot.Respond(c, &tb.CallbackResponse{
 		ShowAlert: false,
 	})
@@ -159,32 +167,37 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 	handleSendError(
 		bot.Edit(
 			c.Message,
-			"Handled " + data.Name + " inline button with action " + data.Action,
+			"Send me subject name",
 		),
 	)
 }
 
 func generateWeekdayInlineKeyboard(action string) [][]tb.InlineButton {
-	mondayInlineButton.Data = fmt.Sprintf(`{"name":"monday","action":"%s"}`, action)
-	tuesdayInlineButton.Data = fmt.Sprintf(`{"name":"tuesday","action":"%s"}`, action)
-	wednesdayInlineButton.Data = fmt.Sprintf(`{"name":"wednesday","action":"%s"}`, action)
-	thursdayInlineButton.Data = fmt.Sprintf(`{"name":"thursday","action":"%s"}`, action)
-	fridayInlineButton.Data = fmt.Sprintf(`{"name":"friday","action":"%s"}`, action)
-	saturdayInlineButton.Data = fmt.Sprintf(`{"name":"saturday","action":"%s"}`, action)
+	actionInt, err := strconv.ParseInt(action, 10, 8)
+	if err != nil {
+		panic(err)
+	}
 
-	weekdayBackInlineButton.Data = action
+	mondayInlineButton.Data = fmt.Sprintf(`{"day":1,"action":%d}`, actionInt)
+	tuesdayInlineButton.Data = fmt.Sprintf(`{"day":2,"action":%d}`, actionInt)
+	wednesdayInlineButton.Data = fmt.Sprintf(`{"day":3,"action":%d}`, actionInt)
+	thursdayInlineButton.Data = fmt.Sprintf(`{"day":4,"action":%d}`, actionInt)
+	fridayInlineButton.Data = fmt.Sprintf(`{"day":5,"action":%d}`, actionInt)
+	saturdayInlineButton.Data = fmt.Sprintf(`{"day":6,"action":%d}`, actionInt)
+
+	//weekdayBackInlineButton.Data = action
 
 	return [][]tb.InlineButton{
 		{mondayInlineButton, tuesdayInlineButton},
 		{wednesdayInlineButton, thursdayInlineButton},
 		{fridayInlineButton, saturdayInlineButton},
-		{weekdayBackInlineButton},
+		//{weekdayBackInlineButton},
 	}
 }
 
-func generateActionsInlineKeyboard(id string) [][]tb.InlineButton {
-	updateActionInlineButton.Data = fmt.Sprintf(`{"id":"%s","action":"update"}`, id)
-	deleteActionInlineButton.Data = fmt.Sprintf(`{"id":"%s","action":"delete"}`, id)
+func generateActionsInlineKeyboard(id int) [][]tb.InlineButton {
+	updateActionInlineButton.Data = fmt.Sprintf(`{"id":%d,"action":"update"}`, id)
+	deleteActionInlineButton.Data = fmt.Sprintf(`{"id":%d,"action":"delete"}`, id)
 
 	return [][]tb.InlineButton{{
 		updateActionInlineButton,
