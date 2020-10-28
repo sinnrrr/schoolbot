@@ -25,6 +25,7 @@ func handleStartCommand() {
 						bot.Send(
 							m.Sender,
 							"You have already accepted the invite from this group",
+							keyboard,
 						),
 					)
 				} else {

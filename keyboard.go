@@ -9,7 +9,7 @@ var (
 
 	newButton       = keyboard.Text("New")
 	homeworkButton  = keyboard.Text("Homework")
-	timesheetButton = keyboard.Text("Timesheet")
+	timetableButton = keyboard.Text("Timetable")
 	alertButton     = keyboard.Text("Alert")
 	settingsButton  = keyboard.Text("Settings")
 )
@@ -17,13 +17,13 @@ var (
 func registerKeyboard() {
 	keyboard.Reply(
 		keyboard.Row(newButton),
-		keyboard.Row(homeworkButton, timesheetButton),
+		keyboard.Row(homeworkButton, timetableButton),
 		keyboard.Row(alertButton, settingsButton),
 	)
 
 	bot.Handle(&newButton, newButtonHandler)
 	bot.Handle(&homeworkButton, homeworkButtonHandler)
-	bot.Handle(&timesheetButton, timesheetButtonHandler)
+	bot.Handle(&timetableButton, timetableButtonHandler)
 	bot.Handle(&alertButton, alertButtonHandler)
 	bot.Handle(&settingsButton, settingsButtonHandler)
 }
@@ -33,6 +33,9 @@ func newButtonHandler(m *tb.Message) {
 		bot.Send(
 			m.Chat,
 			"Handled new button",
+			&tb.ReplyMarkup{
+				InlineKeyboard: operationInlineKeyboard,
+			},
 		),
 	)
 }
@@ -43,17 +46,17 @@ func homeworkButtonHandler(m *tb.Message) {
 			m.Chat,
 			"Handled homework button",
 			&tb.ReplyMarkup{
-				InlineKeyboard: generateInlineKeyboard("432"),
+				InlineKeyboard: generateActionsInlineKeyboard("432"),
 			},
 		),
 	)
 }
 
-func timesheetButtonHandler(m *tb.Message) {
+func timetableButtonHandler(m *tb.Message) {
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"Handled timesheet button",
+			"Handled timetable button",
 		),
 	)
 }
