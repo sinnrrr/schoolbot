@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"github.com/sinnrrr/schoolbot/handlers"
+	"github.com/sinnrrr/schoolbot/db"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
@@ -18,15 +17,12 @@ var (
 
 func handleOnTextEvent() {
 	bot.Handle(tb.OnText, func(m *tb.Message) {
-		state, err := handlers.GetDialogueState(m.Sender.ID)
+		dialogueState, err := db.DialogueState(m.Sender.ID)
 		if err != nil {
 			panic(err)
 		}
 
-		fmt.Println("Got state")
-		fmt.Println(state)
-
-		switch state {
+		switch dialogueState {
 		case NoRequest:
 			handleSendError(
 				bot.Send(
@@ -36,30 +32,29 @@ func handleOnTextEvent() {
 			)
 		case SubjectRequest:
 			homework["subject"] = m.Text
-			err := handlers.SetDialogueState(m.Sender.ID, HomeworkRequest)
+			err := db.SetDialogueState(m.Sender.ID, HomeworkRequest)
 			if err != nil {
 				panic(err)
 			}
 
 			handleSendError(
-				bot.Edit(
-					m,
-					"Enter task",
+				bot.Send(
+					m.Sender,
+					"Enter task now",
 				),
 			)
 		case HomeworkRequest:
 			homework["task"] = m.Text
-			err := handlers.SetDialogueState(m.Sender.ID, NoRequest)
+			err := db.SetDialogueState(m.Sender.ID, NoRequest)
 			if err != nil {
 				panic(err)
 			}
 
 			handleSendError(
-				bot.Edit(
-					m,
-					"Homework from subject " +
-						homework["subject"].(string) +
-						" was successfully created",
+				bot.Send(
+					m.Sender,
+					"Homework from subject was successfuly created",
+					keyboard,
 				),
 			)
 		}

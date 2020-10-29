@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/sinnrrr/schoolbot/handlers"
+	"github.com/sinnrrr/schoolbot/db"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
 func handleHomeworkCommand() {
 	bot.Handle("/homework", func(m *tb.Message) {
-		homeworks, err := handlers.QueryHomework()
+		homeworks, err := db.QueryHomework()
 		if err != nil {
 			panic(err)
 		}

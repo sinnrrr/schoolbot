@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sinnrrr/schoolbot/handlers"
+	"github.com/sinnrrr/schoolbot/db"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"strconv"
 )
@@ -73,10 +73,13 @@ var (
 		Text:   "Saturday",
 	}
 
-	operationInlineKeyboard = [][]tb.InlineButton{
-		{homeworkInlineButton},
-		{timetableInlineButton},
-		{alertInlineButton},
+
+	operationInlineKeyboard = &tb.ReplyMarkup{
+		InlineKeyboard: [][]tb.InlineButton{
+			{homeworkInlineButton},
+			{timetableInlineButton},
+			{alertInlineButton},
+		},
 	}
 
 	//weekdayBackInlineButton = tb.InlineButton{
@@ -138,9 +141,7 @@ func operationInlineButtonHandler(c *tb.Callback) {
 		bot.Edit(
 			c.Message,
 			"Choose the day of the week",
-			&tb.ReplyMarkup{
-				InlineKeyboard: generateWeekdayInlineKeyboard(c.Data),
-			},
+			generateWeekdayInlineKeyboard(c.Data),
 		),
 	)
 }
@@ -152,7 +153,7 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 	}
 
 	homework["day"] = data.Day
-	err = handlers.SetDialogueState(c.Sender.ID, SubjectRequest)
+	err = db.SetDialogueState(c.Sender.ID, SubjectRequest)
 	if err != nil {
 		panic(err)
 	}
@@ -172,7 +173,7 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 	)
 }
 
-func generateWeekdayInlineKeyboard(action string) [][]tb.InlineButton {
+func generateWeekdayInlineKeyboard(action string) *tb.ReplyMarkup {
 	actionInt, err := strconv.ParseInt(action, 10, 8)
 	if err != nil {
 		panic(err)
@@ -187,20 +188,24 @@ func generateWeekdayInlineKeyboard(action string) [][]tb.InlineButton {
 
 	//weekdayBackInlineButton.Data = action
 
-	return [][]tb.InlineButton{
-		{mondayInlineButton, tuesdayInlineButton},
-		{wednesdayInlineButton, thursdayInlineButton},
-		{fridayInlineButton, saturdayInlineButton},
-		//{weekdayBackInlineButton},
+	return &tb.ReplyMarkup {
+		InlineKeyboard: [][]tb.InlineButton{
+			{mondayInlineButton, tuesdayInlineButton},
+			{wednesdayInlineButton, thursdayInlineButton},
+			{fridayInlineButton, saturdayInlineButton},
+			//{weekdayBackInlineButton},
+		},
 	}
 }
 
-func generateActionsInlineKeyboard(id int) [][]tb.InlineButton {
+func generateActionsInlineKeyboard(id int) *tb.ReplyMarkup {
 	updateActionInlineButton.Data = fmt.Sprintf(`{"id":%d,"action":"update"}`, id)
 	deleteActionInlineButton.Data = fmt.Sprintf(`{"id":%d,"action":"delete"}`, id)
 
-	return [][]tb.InlineButton{{
-		updateActionInlineButton,
-		deleteActionInlineButton,
-	}}
+	return &tb.ReplyMarkup{
+		InlineKeyboard: [][]tb.InlineButton{{
+			updateActionInlineButton,
+			deleteActionInlineButton,
+		}},
+	}
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/sinnrrr/schoolbot/handlers"
+	"github.com/sinnrrr/schoolbot/db"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"strconv"
 )
@@ -15,7 +15,7 @@ func handleStartCommand() {
 					panic(err)
 				}
 
-				node, err := handlers.CreateStudent(m.Sender, classID)
+				node, err := db.CreateStudent(m.Sender, classID)
 				if err != nil {
 					panic(err)
 				}
@@ -61,7 +61,7 @@ func handleStartCommand() {
 
 func handleOnAddedEvent() {
 	bot.Handle(tb.OnAddedToGroup, func(m *tb.Message) {
-		node, err := handlers.CreateClass(m.Chat.ID, m.Chat.Title)
+		node, err := db.CreateClass(m.Chat.ID, m.Chat.Title)
 		if err != nil {
 			panic(err)
 		}
