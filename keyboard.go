@@ -42,7 +42,7 @@ func homeworkButtonHandler(m *tb.Message) {
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"Handled homework button",
+			"Handled newHomework button",
 			generateActionsInlineKeyboard(432),
 		),
 	)

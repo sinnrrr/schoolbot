@@ -6,6 +6,7 @@ import (
 	"github.com/sinnrrr/schoolbot/db"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"strconv"
+	"time"
 )
 
 var (
@@ -17,7 +18,7 @@ var (
 
 	homeworkInlineButton = tb.InlineButton{
 		Data:   "1",
-		Unique: "homework",
+		Unique: "newHomework",
 		Text:   "Homework",
 	}
 
@@ -72,8 +73,7 @@ var (
 		Unique: "saturday",
 		Text:   "Saturday",
 	}
-
-
+	
 	operationInlineKeyboard = &tb.ReplyMarkup{
 		InlineKeyboard: [][]tb.InlineButton{
 			{homeworkInlineButton},
@@ -152,7 +152,7 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 		panic(err)
 	}
 
-	homework["day"] = data.Day
+	newHomework["day"] = data.Day
 	err = db.SetDialogueState(c.Sender.ID, SubjectRequest)
 	if err != nil {
 		panic(err)
@@ -178,6 +178,18 @@ func generateWeekdayInlineKeyboard(action string) *tb.ReplyMarkup {
 	if err != nil {
 		panic(err)
 	}
+
+	switch time.Now().Weekday() {
+	
+	}
+
+	mondayInlineButton.Data = fmt.Sprintf(`{"day":1,"action":%d}`, actionInt)
+	tuesdayInlineButton.Data = fmt.Sprintf(`{"day":2,"action":%d}`, actionInt)
+	wednesdayInlineButton.Data = fmt.Sprintf(`{"day":3,"action":%d}`, actionInt)
+	thursdayInlineButton.Data = fmt.Sprintf(`{"day":4,"action":%d}`, actionInt)
+	fridayInlineButton.Data = fmt.Sprintf(`{"day":5,"action":%d}`, actionInt)
+	saturdayInlineButton.Data = fmt.Sprintf(`{"day":6,"action":%d}`, actionInt)
+
 
 	mondayInlineButton.Data = fmt.Sprintf(`{"day":1,"action":%d}`, actionInt)
 	tuesdayInlineButton.Data = fmt.Sprintf(`{"day":2,"action":%d}`, actionInt)

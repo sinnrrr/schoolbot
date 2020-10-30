@@ -12,7 +12,7 @@ const (
 )
 
 var (
-	homework = make(map[string]interface{})
+	newHomework = make(map[string]interface{})
 )
 
 func handleOnTextEvent() {
@@ -31,7 +31,7 @@ func handleOnTextEvent() {
 				),
 			)
 		case SubjectRequest:
-			homework["subject"] = m.Text
+			newHomework["subject"] = m.Text
 			err := db.SetDialogueState(m.Sender.ID, HomeworkRequest)
 			if err != nil {
 				panic(err)
@@ -44,8 +44,14 @@ func handleOnTextEvent() {
 				),
 			)
 		case HomeworkRequest:
-			homework["task"] = m.Text
+			newHomework["tg_id"] = m.Sender.ID
+			newHomework["task"] = m.Text
 			err := db.SetDialogueState(m.Sender.ID, NoRequest)
+			if err != nil {
+				panic(err)
+			}
+
+			_, err = db.CreateHomework(newHomework)
 			if err != nil {
 				panic(err)
 			}

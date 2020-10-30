@@ -6,7 +6,7 @@ import (
 )
 
 func handleHomeworkCommand() {
-	bot.Handle("/homework", func(m *tb.Message) {
+	bot.Handle("/newHomework", func(m *tb.Message) {
 		homeworks, err := db.QueryHomework()
 		if err != nil {
 			panic(err)
@@ -24,7 +24,7 @@ func handleHomeworkCommand() {
 		handleSendError(
 			bot.Send(
 				m.Chat,
-				"Handled homework command",
+				"Handled newHomework command",
 			),
 		)
 	})
