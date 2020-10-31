@@ -10,7 +10,7 @@ func CreateHomework(data map[string]interface{}) (neo4j.Node, error) {
 	result, err := Session.Run(
 		"MATCH (s:Student { tg_id: $tg_id })--(c:Class)"+
 			"\n"+
-			"MERGE (s)-[:CREATED]->(h:Homework { subject: $subject, task: $task, day: $day})-[:BELONGS_TO]-(c)"+
+			"MERGE (s)-[:CREATED]->(h:Homework { subject: $subject, task: $task, deadline: $deadline})-[:BELONGS_TO]-(c)"+
 			"\n"+
 			"RETURN h",
 		data,
@@ -26,21 +26,25 @@ func CreateHomework(data map[string]interface{}) (neo4j.Node, error) {
 	return homework, result.Err()
 }
 
-func QueryHomework() (neo4j.Node, error) {
-	var homeworks neo4j.Node
+func QueryHomework(studentID int) ([]interface{}, error) {
+	var homeworks []interface{}
 
 	result, err := Session.Run(
-		"MATCH (s:Student)-[:HAS]->(h:Homework)"+
+		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:BELONGS_TO]-(h:Homework)"+
 			"\n"+
-			"RETURN *",
-		map[string]interface{}{},
+			"RETURN h"+
+			"\n"+
+			"ORDER BY h.deadline",
+		map[string]interface{}{
+			"tg_id": studentID,
+		},
 	)
 	if err != nil {
 		return nil, err
 	}
 
 	for result.Next() {
-		homeworks = result.Record().GetByIndex(0).(neo4j.Node)
+		homeworks = append(homeworks, result.Record().Values()[0])
 	}
 
 	return homeworks, result.Err()

@@ -41,6 +41,9 @@ func handleOnTextEvent() {
 				bot.Send(
 					m.Sender,
 					"Enter task now",
+					&tb.ReplyMarkup{
+						InlineKeyboard: [][]tb.InlineButton{{cancelInlineButton}},
+					},
 				),
 			)
 		case HomeworkRequest:
@@ -59,7 +62,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Sender,
-					"Homework from subject was successfuly created",
+					"Homework from subject was successfully created",
 					keyboard,
 				),
 			)

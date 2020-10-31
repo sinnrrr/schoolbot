@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/sinnrrr/schoolbot/config"
+
 	"github.com/sinnrrr/schoolbot/db"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"os"

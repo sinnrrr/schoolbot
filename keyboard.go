@@ -1,11 +1,15 @@
 package main
 
 import (
+	"fmt"
+	"github.com/neo4j/neo4j-go-driver/neo4j"
+	"github.com/sinnrrr/schoolbot/db"
 	tb "gopkg.in/tucnak/telebot.v2"
+	"time"
 )
 
 var (
-	keyboard = &tb.ReplyMarkup{ResizeReplyKeyboard: true, OneTimeKeyboard: true}
+	keyboard = &tb.ReplyMarkup{ResizeReplyKeyboard: true}
 
 	newButton       = keyboard.Text("New")
 	homeworkButton  = keyboard.Text("Homework")
@@ -32,20 +36,53 @@ func newButtonHandler(m *tb.Message) {
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"Handled new button",
+			"What do you want to create today, master?",
 			operationInlineKeyboard,
 		),
 	)
 }
 
 func homeworkButtonHandler(m *tb.Message) {
-	handleSendError(
-		bot.Send(
-			m.Chat,
-			"Handled newHomework button",
-			generateActionsInlineKeyboard(432),
-		),
-	)
+	homeworks, err := db.QueryHomework(m.Sender.ID)
+	if err != nil {
+		panic(err)
+	}
+
+	if homeworks == nil {
+		handleSendError(
+			bot.Send(
+				m.Chat,
+				"No homeworks detected",
+			),
+		)
+	} else {
+		for _, homework := range homeworks {
+			currentHomework := homework.(neo4j.Node).Props()
+			currentHomeworkDeadline := time.Unix(currentHomework["deadline"].(int64), 0)
+
+			handleSendError(
+				bot.Send(
+					m.Chat,
+					"*Subject: *"+
+						currentHomework["subject"].(string)+
+						"\n"+
+						"*Task: *"+
+						currentHomework["task"].(string)+
+						"\n"+
+						"*Deadline: *"+
+						fmt.Sprintf(
+							"%d\\.%d\\.%d",
+							currentHomeworkDeadline.Day(),
+							currentHomeworkDeadline.Month(),
+							currentHomeworkDeadline.Year(),
+						),
+					generateActionsInlineKeyboard(homework.(neo4j.Node).Id()),
+					tb.ModeMarkdownV2,
+				),
+			)
+		}
+	}
+
 }
 
 func timetableButtonHandler(m *tb.Message) {
