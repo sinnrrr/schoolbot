@@ -53,6 +53,7 @@ func handleStartCommand() {
 				bot.Send(
 					m.Chat,
 					"Hello, how can I help in your group?",
+					keyboard,
 				),
 			)
 		}
@@ -89,6 +90,7 @@ func handleOnAddedEvent() {
 
 func handleSendError(m *tb.Message, err error) {
 	if err != nil {
+		bot.Send(m.Chat, "Something went wrong with bot. Please, try again later.")
 		panic(err)
 	}
 }

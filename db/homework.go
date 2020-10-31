@@ -65,7 +65,5 @@ func DeleteHomework(homeworkID int) error {
 		return err
 	}
 
-	//TODO: refactor answer without update/delete and one message
-
 	return result.Err()
 }

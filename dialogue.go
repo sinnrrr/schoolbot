@@ -26,7 +26,7 @@ func handleOnTextEvent() {
 		case NoRequest:
 			handleSendError(
 				bot.Send(
-					m.Sender,
+					m.Chat,
 					"Sorry, but I don't understand you. Їм сало...",
 				),
 			)
@@ -39,11 +39,8 @@ func handleOnTextEvent() {
 
 			handleSendError(
 				bot.Send(
-					m.Sender,
+					m.Chat,
 					"Enter task now",
-					&tb.ReplyMarkup{
-						InlineKeyboard: [][]tb.InlineButton{{cancelInlineButton}},
-					},
 				),
 			)
 		case HomeworkRequest:
@@ -61,7 +58,7 @@ func handleOnTextEvent() {
 
 			handleSendError(
 				bot.Send(
-					m.Sender,
+					m.Chat,
 					"Homework from subject was successfully created",
 					keyboard,
 				),

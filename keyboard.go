@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"github.com/sinnrrr/schoolbot/db"
+	"github.com/sinnrrr/schoolbot/templates"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"time"
 )
@@ -56,31 +56,27 @@ func homeworkButtonHandler(m *tb.Message) {
 			),
 		)
 	} else {
-		for _, homework := range homeworks {
+		var reply = ""
+
+		for index, homework := range homeworks {
 			currentHomework := homework.(neo4j.Node).Props()
 			currentHomeworkDeadline := time.Unix(currentHomework["deadline"].(int64), 0)
 
-			handleSendError(
-				bot.Send(
-					m.Chat,
-					"*Subject: *"+
-						currentHomework["subject"].(string)+
-						"\n"+
-						"*Task: *"+
-						currentHomework["task"].(string)+
-						"\n"+
-						"*Deadline: *"+
-						fmt.Sprintf(
-							"%d\\.%d\\.%d",
-							currentHomeworkDeadline.Day(),
-							currentHomeworkDeadline.Month(),
-							currentHomeworkDeadline.Year(),
-						),
-					generateActionsInlineKeyboard(homework.(neo4j.Node).Id()),
-					tb.ModeMarkdownV2,
-				),
+			reply += templates.GenerateHomeworkMessage(
+				index,
+				currentHomeworkDeadline,
+				currentHomework["subject"].(string),
+				currentHomework["task"].(string),
 			)
 		}
+
+		handleSendError(
+			bot.Send(
+				m.Chat,
+				reply,
+				tb.ModeMarkdown,
+			),
+		)
 	}
 
 }
@@ -106,7 +102,7 @@ func alertButtonHandler(m *tb.Message) {
 func settingsButtonHandler(m *tb.Message) {
 	handleSendError(
 		bot.Send(
-			m.Sender,
+			m.Chat,
 			"Handled settings button",
 		),
 	)
