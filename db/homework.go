@@ -49,3 +49,23 @@ func QueryHomework(studentID int) ([]interface{}, error) {
 
 	return homeworks, result.Err()
 }
+
+func DeleteHomework(homeworkID int) error {
+	result, err := Session.Run(
+		"MATCH (h:Homework)"+
+			"\n"+
+			"WHERE ID(h)=$id"+
+			"\n"+
+			"DETACH DELETE h",
+		map[string]interface{}{
+			"id": homeworkID,
+		},
+	)
+	if err != nil {
+		return err
+	}
+
+	//TODO: refactor answer without update/delete and one message
+
+	return result.Err()
+}

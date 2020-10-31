@@ -11,9 +11,12 @@ import (
 var bot *tb.Bot
 
 func main() {
-	db.Init()
+	err := db.Init()
+	if err != nil {
+		panic(err)
+	}
 
-	err := InitTunnel()
+	err = InitTunnel()
 	if err != nil {
 		panic(err)
 	}

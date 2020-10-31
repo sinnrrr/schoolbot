@@ -128,11 +128,15 @@ func actionInlineButtonHandler(c *tb.Callback) {
 			),
 		)
 	case DeleteAction:
+		err := db.DeleteHomework(item.ID)
+		if err != nil {
+			panic(err)
+		}
+
 		handleSendError(
-			bot.Send(
-				c.Sender,
-				"Handled delete action for homework with ID "+
-					strconv.Itoa(item.ID),
+			bot.Edit(
+				c.Message,
+				"This homework was deleted",
 			),
 		)
 	}
