@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/afdalwahyu/gonnel"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"os"

@@ -1,8 +1,8 @@
 package main
 
 import (
-	_ "github.com/joho/godotenv/autoload"
 	"github.com/sinnrrr/schoolbot/config"
+
 	"github.com/sinnrrr/schoolbot/db"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"os"
@@ -11,9 +11,12 @@ import (
 var bot *tb.Bot
 
 func main() {
-	db.Init()
+	err := db.Init()
+	if err != nil {
+		panic(err)
+	}
 
-	err := InitTunnel()
+	err = InitTunnel()
 	if err != nil {
 		panic(err)
 	}
@@ -31,8 +34,10 @@ func main() {
 	registerKeyboard()
 	registerInlineKeyboard()
 
-	handleStartCommand()
+	handleOnTextEvent()
 	handleOnAddedEvent()
+
+	handleStartCommand()
 
 	println("Websocket has been set up on", os.Getenv("PUBLIC_URL"))
 	println("Bot has been started on port", os.Getenv("PORT"))

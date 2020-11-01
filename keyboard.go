@@ -1,56 +1,80 @@
 package main
 
 import (
+	"github.com/sinnrrr/schoolbot/db"
+	"github.com/sinnrrr/schoolbot/templates"
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
 var (
 	keyboard = &tb.ReplyMarkup{ResizeReplyKeyboard: true}
 
+	newButton       = keyboard.Text("New")
 	homeworkButton  = keyboard.Text("Homework")
-	timesheetButton = keyboard.Text("Timesheet")
+	timetableButton = keyboard.Text("Timetable")
 	alertButton     = keyboard.Text("Alert")
 	settingsButton  = keyboard.Text("Settings")
 )
 
 func registerKeyboard() {
 	keyboard.Reply(
-		keyboard.Row(homeworkButton, timesheetButton),
+		keyboard.Row(newButton),
+		keyboard.Row(homeworkButton, timetableButton),
 		keyboard.Row(alertButton, settingsButton),
 	)
 
+	bot.Handle(&newButton, newButtonHandler)
 	bot.Handle(&homeworkButton, homeworkButtonHandler)
-	bot.Handle(&timesheetButton, timesheetButtonHandler)
+	bot.Handle(&timetableButton, timetableButtonHandler)
 	bot.Handle(&alertButton, alertButtonHandler)
 	bot.Handle(&settingsButton, settingsButtonHandler)
 }
 
-func homeworkButtonHandler(m *tb.Message) {
+func newButtonHandler(m *tb.Message) {
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"Handled homework button",
-			&tb.ReplyMarkup{
-				InlineKeyboard: generateInlineKeyboard("432"),
-			},
+			"What do you want to create today, master?",
+			operationInlineKeyboard,
 		),
 	)
 }
 
-func timesheetButtonHandler(m *tb.Message) {
+func homeworkButtonHandler(m *tb.Message) {
+	homeworks, err := db.QueryHomework(m.Sender.ID)
+	if err != nil {
+		panic(err)
+	}
+
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"Handled timesheet button",
+			templates.GenerateHomeworkMessage(homeworks),
+			tb.ModeMarkdown,
 		),
 	)
 }
 
 func alertButtonHandler(m *tb.Message) {
+	alerts, err := db.QueryAlert(m.Sender.ID)
+	if err != nil {
+		panic(err)
+	}
+
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"Handled alert button",
+			templates.GenerateAlertMessage(alerts),
+			tb.ModeMarkdown,
+		),
+	)
+}
+
+func timetableButtonHandler(m *tb.Message) {
+	handleSendError(
+		bot.Send(
+			m.Chat,
+			"Handled timetable button",
 		),
 	)
 }
