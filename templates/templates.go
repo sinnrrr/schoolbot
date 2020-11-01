@@ -22,7 +22,7 @@ const (
 	alertReply = "\n" +
 		"*%d.* _%s_" +
 		"\n" +
-		"*Onto:* %d.%d.%d" +
+		"*Onto:* %d.%d.%d %d:%d" +
 		"\n"
 )
 
@@ -40,6 +40,8 @@ func GenerateAlertMessage(alerts []map[string]interface{}) string {
 				alertDate.Day(),
 				alertDate.Month(),
 				alertDate.Year(),
+				alertDate.Hour(),
+				alertDate.Minute(),
 			)
 		}
 

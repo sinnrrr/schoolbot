@@ -10,9 +10,9 @@ var (
 	keyboard = &tb.ReplyMarkup{ResizeReplyKeyboard: true}
 
 	newButton       = keyboard.Text("New")
-	homeworkButton  = keyboard.Text("Homework")
+	homeworkButton  = keyboard.Text("Homeworks")
 	timetableButton = keyboard.Text("Timetable")
-	alertButton     = keyboard.Text("Alert")
+	alertButton     = keyboard.Text("Alerts")
 	settingsButton  = keyboard.Text("Settings")
 )
 
