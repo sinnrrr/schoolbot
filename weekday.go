@@ -168,7 +168,27 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 				),
 			)
 		case alertAction:
+			newAlert["date"] = item.Date
+			err = db.SetDialogueState(c.Sender.ID, TimeRequest)
+			if err != nil {
+				panic(err)
+			}
 
+			err = bot.Respond(c, &tb.CallbackResponse{
+				ShowAlert: false,
+			})
+			if err != nil {
+				panic(err)
+			}
+
+			handleSendError(
+				bot.Edit(
+					c.Message,
+					"Now, send me time in 24-hour format."+
+						" Note, that it should be rounded to 10 in order to properly work." +
+						" Example: 15:10 or 8:40",
+				),
+			)
 		}
 	}
 }

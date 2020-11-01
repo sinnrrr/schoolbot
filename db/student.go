@@ -6,8 +6,8 @@ import (
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
-func CreateStudent(user *tb.User, classID int64) (neo4j.Node, error) {
-	var student neo4j.Node
+func CreateStudent(user *tb.User, classID int64) (map[string]interface{}, error) {
+	var student map[string]interface{}
 
 	result, err := Session.Run(
 		"MATCH (c:Class { tg_id: $class_id })"+
@@ -37,14 +37,14 @@ func CreateStudent(user *tb.User, classID int64) (neo4j.Node, error) {
 	}
 
 	for result.Next() {
-		student = result.Record().GetByIndex(0).(neo4j.Node)
+		student = result.Record().GetByIndex(0).(neo4j.Node).Props()
 	}
 
 	return student, result.Err()
 }
 
-func StudentSession(studentID int) (neo4j.Node, error) {
-	var session neo4j.Node
+func StudentSession(studentID int) (map[string]interface{}, error) {
+	var session map[string]interface{}
 
 	result, err := Session.Run(
 		"MATCH (s:Student { tg_id: $tg_id }) RETURN s",
@@ -57,7 +57,7 @@ func StudentSession(studentID int) (neo4j.Node, error) {
 	}
 
 	for result.Next() {
-		session = result.Record().GetByIndex(0).(neo4j.Node)
+		session = result.Record().GetByIndex(0).(neo4j.Node).Props()
 	}
 
 	return session, result.Err()
@@ -72,7 +72,7 @@ func DialogueState(studentID int) (int8, error) {
 		return -1, fmt.Errorf("failed to find user with the ID %d", studentID)
 	}
 
-	return int8(session.Props()["dialogue_state"].(int64)), err
+	return int8(session["dialogue_state"].(int64)), err
 }
 
 func SetDialogueState(studentID int, state int8) error {

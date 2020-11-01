@@ -15,12 +15,12 @@ func handleStartCommand() {
 					panic(err)
 				}
 
-				node, err := db.CreateStudent(m.Sender, classID)
+				student, err := db.CreateStudent(m.Sender, classID)
 				if err != nil {
 					panic(err)
 				}
 
-				if node == nil {
+				if student == nil {
 					handleSendError(
 						bot.Send(
 							m.Sender,
@@ -62,12 +62,12 @@ func handleStartCommand() {
 
 func handleOnAddedEvent() {
 	bot.Handle(tb.OnAddedToGroup, func(m *tb.Message) {
-		node, err := db.CreateClass(m.Chat.ID, m.Chat.Title)
+		class, err := db.CreateClass(m.Chat.ID, m.Chat.Title)
 		if err != nil {
 			panic(err)
 		}
 
-		if node == nil {
+		if class == nil {
 			handleSendError(
 				bot.Send(
 					m.Chat,

@@ -16,30 +16,61 @@ const (
 		"\n" +
 		"*Task:* %s" +
 		"\n" +
-		"*Deadline:* %s" +
+		"*Deadline:* %d.%d.%d" +
+		"\n"
+
+	alertReply = "\n" +
+		"*%d.* _%s_" +
+		"\n" +
+		"*Onto:* %d.%d.%d" +
 		"\n"
 )
 
-func GenerateHomeworkMessage(
-	index int,
-	deadline time.Time,
-	subject string,
-	task string,
-) string {
-	formattedDeadline := fmt.Sprintf(
-		"%d.%d.%d",
-		deadline.Day(),
-		deadline.Month(),
-		deadline.Year(),
-	)
+func GenerateAlertMessage(alerts []map[string]interface{}) string {
+	var reply = ""
 
-	return fmt.Sprintf(
-		homeworkReply,
-		index+1,
-		subject,
-		task,
-		formattedDeadline,
-	)
+	if alerts != nil {
+		for index, alert := range alerts {
+			alertDate := time.Unix(alert["date"].(int64), 0)
+
+			reply += fmt.Sprintf(
+				alertReply,
+				index+1,
+				alert["content"].(string),
+				alertDate.Day(),
+				alertDate.Month(),
+				alertDate.Year(),
+			)
+		}
+
+		return reply
+	}
+
+	return "No alerts detected"
+}
+
+func GenerateHomeworkMessage(homeworks []map[string]interface{}) string {
+	var reply = ""
+
+	if homeworks != nil {
+		for index, homework := range homeworks {
+			homeworkDeadline := time.Unix(homework["deadline"].(int64), 0)
+
+			reply += fmt.Sprintf(
+				homeworkReply,
+				index+1,
+				homework["subject"].(string),
+				homework["task"].(string),
+				homeworkDeadline.Day(),
+				homeworkDeadline.Month(),
+				homeworkDeadline.Year(),
+			)
+		}
+
+		return reply
+	}
+
+	return "No homeworks detected"
 }
 
 func WeekdayInlineButtonText(

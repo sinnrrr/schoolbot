@@ -4,8 +4,8 @@ import (
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 )
 
-func CreateHomework(data map[string]interface{}) (neo4j.Node, error) {
-	var homework neo4j.Node
+func CreateHomework(data map[string]interface{}) (map[string]interface{}, error) {
+	var homework map[string]interface{}
 
 	result, err := Session.Run(
 		"MATCH (s:Student { tg_id: $tg_id })--(c:Class)"+
@@ -20,14 +20,14 @@ func CreateHomework(data map[string]interface{}) (neo4j.Node, error) {
 	}
 
 	for result.Next() {
-		homework = result.Record().GetByIndex(0).(neo4j.Node)
+		homework = result.Record().GetByIndex(0).(neo4j.Node).Props()
 	}
 
 	return homework, result.Err()
 }
 
-func QueryHomework(studentID int) ([]interface{}, error) {
-	var homeworks []interface{}
+func QueryHomework(studentID int) ([]map[string]interface{}, error) {
+	var homeworks []map[string]interface{}
 
 	result, err := Session.Run(
 		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:BELONGS_TO]-(h:Homework)"+
@@ -44,7 +44,7 @@ func QueryHomework(studentID int) ([]interface{}, error) {
 	}
 
 	for result.Next() {
-		homeworks = append(homeworks, result.Record().Values()[0])
+		homeworks = append(homeworks, result.Record().Values()[0].(neo4j.Node).Props())
 	}
 
 	return homeworks, result.Err()

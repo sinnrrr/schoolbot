@@ -1,11 +1,9 @@
 package main
 
 import (
-	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"github.com/sinnrrr/schoolbot/db"
 	"github.com/sinnrrr/schoolbot/templates"
 	tb "gopkg.in/tucnak/telebot.v2"
-	"time"
 )
 
 var (
@@ -48,37 +46,28 @@ func homeworkButtonHandler(m *tb.Message) {
 		panic(err)
 	}
 
-	if homeworks == nil {
-		handleSendError(
-			bot.Send(
-				m.Chat,
-				"No homeworks detected",
-			),
-		)
-	} else {
-		var reply = ""
+	handleSendError(
+		bot.Send(
+			m.Chat,
+			templates.GenerateHomeworkMessage(homeworks),
+			tb.ModeMarkdown,
+		),
+	)
+}
 
-		for index, homework := range homeworks {
-			currentHomework := homework.(neo4j.Node).Props()
-			currentHomeworkDeadline := time.Unix(currentHomework["deadline"].(int64), 0)
-
-			reply += templates.GenerateHomeworkMessage(
-				index,
-				currentHomeworkDeadline,
-				currentHomework["subject"].(string),
-				currentHomework["task"].(string),
-			)
-		}
-
-		handleSendError(
-			bot.Send(
-				m.Chat,
-				reply,
-				tb.ModeMarkdown,
-			),
-		)
+func alertButtonHandler(m *tb.Message) {
+	alerts, err := db.QueryAlert(m.Sender.ID)
+	if err != nil {
+		panic(err)
 	}
 
+	handleSendError(
+		bot.Send(
+			m.Chat,
+			templates.GenerateAlertMessage(alerts),
+			tb.ModeMarkdown,
+		),
+	)
 }
 
 func timetableButtonHandler(m *tb.Message) {
@@ -86,15 +75,6 @@ func timetableButtonHandler(m *tb.Message) {
 		bot.Send(
 			m.Chat,
 			"Handled timetable button",
-		),
-	)
-}
-
-func alertButtonHandler(m *tb.Message) {
-	handleSendError(
-		bot.Send(
-			m.Chat,
-			"Handled alert button",
 		),
 	)
 }
