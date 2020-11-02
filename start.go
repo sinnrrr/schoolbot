@@ -24,7 +24,7 @@ func handleStartCommand() {
 					handleSendError(
 						bot.Send(
 							m.Sender,
-							"You have already accepted the invite from this group",
+							"You have already accepted the invite from this group :p",
 							keyboard,
 						),
 					)
@@ -32,7 +32,7 @@ func handleStartCommand() {
 					handleSendError(
 						bot.Send(
 							m.Chat,
-							"Hello, how can I help?",
+							"Hello, how can I help my good old friend? :)",
 							keyboard,
 						),
 					)
@@ -41,7 +41,7 @@ func handleStartCommand() {
 				handleSendError(
 					bot.Send(
 						m.Chat,
-						"To get started, please, add me to group",
+						"To get things started, please add me to your class group :]",
 						&tb.ReplyMarkup{
 							InlineKeyboard: groupInviteKeys,
 						},
@@ -78,7 +78,7 @@ func handleOnAddedEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Invite to your personal chat",
+					"Hey guys! Click this button in order to have access to create and read homeworks and alerts from ths group ;p",
 					&tb.ReplyMarkup{
 						InlineKeyboard: generatePersonalInviteKeys(m.Chat.ID),
 					},

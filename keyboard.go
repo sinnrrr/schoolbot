@@ -71,35 +71,41 @@ func alertButtonHandler(m *tb.Message) {
 }
 
 func timetableButtonHandler(m *tb.Message) {
-	handleSendError(
-		bot.Send(
-			m.Chat,
-			"Any timetable has been found",
-			createLessonInlineKeyboard,
-		),
-	)
-	//if timetable == nil {
-	//	handleSendError(
-	//		bot.Send(
-	//			m.Chat,
-	//			"Any timetable has been found",
-	//		),
-	//	)
-	//} else {
-	//	handleSendError(
-	//		bot.Send(
-	//			m.Chat,
-	//			"Handled timetable button",
-	//		),
-	//	)
-	//}
+	timetable, err := db.StudentTimetable(m.Sender.ID)
+	if err != nil {
+		panic(err)
+	}
+
+	if timetable == nil {
+		handleSendError(
+			bot.Send(
+				m.Chat,
+				"Any timetable has been found",
+				createLessonInlineKeyboard,
+			),
+		)
+	} else {
+		handleSendError(
+			bot.Send(
+				m.Chat,
+				templates.GenerateTimetableMessage(timetable[0]),
+				tb.ModeMarkdown,
+			),
+		)
+		handleSendError(
+			bot.Send(
+				m.Chat,
+				templates.GenerateScheduleMessage(timetable[1]),
+			),
+		)
+	}
 }
 
 func settingsButtonHandler(m *tb.Message) {
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"Handled settings button",
+			"Coming soon",
 		),
 	)
 }

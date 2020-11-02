@@ -77,7 +77,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Homework from subject was successfully created",
+					"Homework from subject was successfully created. Something else?",
 					keyboard,
 				),
 			)
@@ -129,7 +129,13 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Sender,
-					"Enter lessons for monday",
+					"Enter lessons for monday in multiline mode. " +
+						"For example:\n"+
+						"English\n" +
+						"Math\n" +
+						"Geography\n" +
+						"Physics\n" +
+						"Biology\n",
 				),
 			)
 		case MondayRequest:
@@ -143,7 +149,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Enter the same way for tuesday",
+					"Enter lessons the same way for tuesday",
 				),
 			)
 		case TuesdayRequest:
@@ -185,7 +191,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Enter the same way for friday",
+					"Same for friday",
 				),
 			)
 		case FridayRequest:
@@ -199,7 +205,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Enter the same way for saturday",
+					"And the last - saturday",
 				),
 			)
 		case SaturdayRequest:
@@ -218,7 +224,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"All got in",
+					"Gotcha! What's next?",
 				),
 			)
 		}

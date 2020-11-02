@@ -80,9 +80,9 @@ func createLessonInlineButtonHandler(c *tb.Callback) {
 	handleSendError(
 		bot.Edit(
 			c.Message,
-			"Enter the start and the end of subjects"+
+			`Enter the start and the end time of your lessons using the scheme: "<START_HOURS>:<START_MINUTES>[space]<END_HOURS>:<END_MINUTES>[enter]`+
 				"\n"+
-				"Example: "+
+				"For example: "+
 				"\n"+
 				"\n"+
 				"8:30 9:10"+
@@ -107,7 +107,7 @@ func operationInlineButtonHandler(c *tb.Callback) {
 	handleSendError(
 		bot.Edit(
 			c.Message,
-			"Choose the day of the week",
+			"Choose the day of the week ;)",
 			generateWeekdayInlineKeyboard(c.Data),
 		),
 	)

@@ -27,20 +27,3 @@ func ParseSubjects(message string) []string {
 
 	return subjects
 }
-
-//func GenerateSchedule(
-//	timetable map[time.Weekday][]string,
-//	schedule [][]string,
-//) map[string]map[string][]string {
-//	var generated = make(map[string]map[string][]string)
-//
-//	for weekday, subjects := range timetable{
-//		for index, subject := range subjects{
-//			generated[weekday.String()] = map[string][]string{
-//				subject: schedule[index],
-//			}
-//		}
-//	}
-//
-//	return generated
-//}
