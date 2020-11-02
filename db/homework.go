@@ -8,7 +8,7 @@ func CreateHomework(data map[string]interface{}) (map[string]interface{}, error)
 	var homework map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (s:Student { tg_id: $tg_id })--(c:Class)"+
+		"MATCH (s:Student { tg_id: $tg_id })-[:STUDYING_IN]->(c:Class)"+
 			"\n"+
 			"MERGE (s)-[:CREATED]->(h:Homework { subject: $subject, task: $task, deadline: $deadline})-[:BELONGS_TO]-(c)"+
 			"\n"+

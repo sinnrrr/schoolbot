@@ -2,10 +2,13 @@ package templates
 
 import (
 	"fmt"
+	"net/url"
 	"time"
 )
 
 const (
+	messageAPI = "https://api.telegram.org/bot%s/sendMessage?chat_id=%d&text=%s"
+
 	weekdayInlineButtonText = "%s (%d.%d)"
 	weekdayInlineButtonData = `{"date":%d,"action":%d}`
 
@@ -24,7 +27,19 @@ const (
 		"\n" +
 		"*Onto:* %d.%d.%d %d:%d" +
 		"\n"
+
+	cronAlert = "*Alert*" +
+		"\n" +
+		"%s"
 )
+
+func GenerateCronAlert(alert string) string {
+	return fmt.Sprintf(cronAlert, alert)
+}
+
+func GenerateMessageURL(botToken string, chatID int, message string) string {
+	return fmt.Sprintf(messageAPI, botToken, chatID, url.QueryEscape(message))
+}
 
 func GenerateAlertMessage(alerts []map[string]interface{}) string {
 	var reply = ""

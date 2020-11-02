@@ -74,9 +74,25 @@ func timetableButtonHandler(m *tb.Message) {
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"Handled timetable button",
+			"Any timetable has been found",
+			createLessonInlineKeyboard,
 		),
 	)
+	//if timetable == nil {
+	//	handleSendError(
+	//		bot.Send(
+	//			m.Chat,
+	//			"Any timetable has been found",
+	//		),
+	//	)
+	//} else {
+	//	handleSendError(
+	//		bot.Send(
+	//			m.Chat,
+	//			"Handled timetable button",
+	//		),
+	//	)
+	//}
 }
 
 func settingsButtonHandler(m *tb.Message) {
