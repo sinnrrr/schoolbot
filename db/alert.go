@@ -9,10 +9,8 @@ func QueryAlert(studentID int) ([]map[string]interface{}, error) {
 	var alerts []map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:BELONGS_TO]-(a:Alert)"+
-			"\n"+
-			"RETURN a"+
-			"\n"+
+		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:BELONGS_TO]-(a:Alert)\n"+
+			"RETURN a\n"+
 			"ORDER BY a.date",
 		map[string]interface{}{
 			"tg_id": studentID,
@@ -41,12 +39,9 @@ func CreateAlert(
 	}
 
 	result, err := Session.Run(
-		"MATCH (s:Student { tg_id: $tg_id })"+
-			"\n"+
-			"MATCH (s)-[:STUDYING_IN]->(c:Class)"+
-			"\n"+
-			"CREATE (s)-[:CREATED]->(a:Alert { date: $date, content: $content })-[:BELONGS_TO]->(c)"+
-			"\n"+
+		"MATCH (s:Student { tg_id: $tg_id })\n"+
+			"MATCH (s)-[:STUDYING_IN]->(c:Class)\n"+
+			"CREATE (s)-[:CREATED]->(a:Alert { date: $date, content: $content })-[:BELONGS_TO]->(c)\n"+
 			"RETURN a",
 		map[string]interface{}{
 			"tg_id":   studentID,

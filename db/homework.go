@@ -8,10 +8,8 @@ func CreateHomework(data map[string]interface{}) (map[string]interface{}, error)
 	var homework map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (s:Student { tg_id: $tg_id })-[:STUDYING_IN]->(c:Class)"+
-			"\n"+
-			"MERGE (s)-[:CREATED]->(h:Homework { subject: $subject, task: $task, deadline: $deadline})-[:BELONGS_TO]-(c)"+
-			"\n"+
+		"MATCH (s:Student { tg_id: $tg_id })-[:STUDYING_IN]->(c:Class) \n"+
+			"MERGE (s)-[:CREATED]->(h:Homework { subject: $subject, task: $task, deadline: $deadline})-[:BELONGS_TO]-(c)\n"+
 			"RETURN h",
 		data,
 	)
@@ -30,11 +28,9 @@ func QueryHomework(studentID int) ([]map[string]interface{}, error) {
 	var homeworks []map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:BELONGS_TO]-(h:Homework)"+
-			"\n"+
-			"RETURN h"+
-			"\n"+
-			"ORDER BY h.deadline",
+		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:BELONGS_TO]-(h:Homework)\n"+
+			"RETURN h\n"+
+			"ORDER BY h.deadline\n",
 		map[string]interface{}{
 			"tg_id": studentID,
 		},

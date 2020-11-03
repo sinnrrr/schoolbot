@@ -9,10 +9,8 @@ func CreateTimetable(studentID int, scheduleID int64, data map[time.Weekday][]st
 	var schedule map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (l:Schedule) WHERE ID(l)=$schedule_id"+
-			"\n"+
-			"MATCH (s:Student { tg_id: $tg_id })-[:STUDYING_IN]->(c:Class)"+
-			"\n"+
+		"MATCH (l:Schedule) WHERE ID(l)=$schedule_id\n"+
+			"MATCH (s:Student { tg_id: $tg_id })-[:STUDYING_IN]->(c:Class)\n"+
 			"MERGE (s)-[:CREATED]->(t:Timetable {"+
 			"monday: $monday,"+
 			"tuesday: $tuesday,"+
@@ -20,10 +18,8 @@ func CreateTimetable(studentID int, scheduleID int64, data map[time.Weekday][]st
 			"thursday: $thursday,"+
 			"friday: $friday,"+
 			"saturday: $saturday"+
-			"})<-[:STUDIES_ON]->(c)"+
-			"\n"+
-			"MERGE (t)-[:IMPLEMENTS]->(l)"+
-			"\n"+
+			"})<-[:STUDIES_ON]->(c)\n"+
+			"MERGE (t)-[:IMPLEMENTS]->(l)\n"+
 			"RETURN t",
 		map[string]interface{}{
 			"tg_id":       studentID,
@@ -51,8 +47,7 @@ func StudentTimetable(studentID int) ([]map[string]interface{}, error) {
 	var final []map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:STUDIES_ON]-(t:Timetable)-[:IMPLEMENTS]->(l:Schedule)"+
-			"\n"+
+		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:STUDIES_ON]-(t:Timetable)-[:IMPLEMENTS]->(l:Schedule)\n"+
 			"RETURN t, l",
 		map[string]interface{}{
 			"tg_id": studentID,

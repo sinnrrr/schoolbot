@@ -10,8 +10,7 @@ func CreateStudent(user *tb.User, classID int64) (map[string]interface{}, error)
 	var student map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (c:Class { tg_id: $class_id })"+
-			"\n"+
+		"MATCH (c:Class { tg_id: $class_id })\n"+
 			"MERGE (s:Student {"+
 			"tg_id: $tg_id,"+
 			"first_name: $first_name,"+
@@ -19,8 +18,7 @@ func CreateStudent(user *tb.User, classID int64) (map[string]interface{}, error)
 			"username: $username,"+
 			"language_code: $language_code,"+
 			"dialogue_state: $dialogue_state"+
-			"})-[:STUDYING_IN]->(c)"+
-			"\n"+
+			"})-[:STUDYING_IN]->(c)\n"+
 			"RETURN s",
 		map[string]interface{}{
 			"tg_id":          user.ID,

@@ -6,10 +6,8 @@ func CreateSchedule(studentID int, data []string) (map[string]interface{}, error
 	var schedule map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (s:Student { tg_id: $tg_id })-[:STUDYING_IN]->(c:Class)"+
-			"\n"+
-			"MERGE (c)-[:USES]->(l:Schedule { data: $schedule })" +
-			"\n" +
+		"MATCH (s:Student { tg_id: $tg_id })-[:STUDYING_IN]->(c:Class)\n"+
+			"MERGE (c)-[:USES]->(l:Schedule { data: $schedule })\n" +
 			"RETURN l",
 		map[string]interface{}{
 			"tg_id": studentID,
