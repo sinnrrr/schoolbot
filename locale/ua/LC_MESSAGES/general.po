@@ -1,0 +1,35 @@
+msgid "New"
+msgstr "Створити"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "Homework"
+msgstr "Завдання"
+
+msgid "Homeworks"
+msgstr "Завдання"
+
+msgid "Alert"
+msgstr "Оголошення"
+
+msgid "Alerts"
+msgstr "Оголошення"
+
+msgid "Timetable"
+msgstr "Розклад"
+
+msgid "Settings"
+msgstr "Налаштування"
+
+msgid "Coming soon :)"
+msgstr "У розробці :)"
+
+msgid "Create timetable"
+msgstr "Створити розклад"
+
+msgid "Add to group"
+msgstr "Додати до групи"
+
+msgid "Go to personal chat"
+msgstr "У приватний чат"

@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/chai2010/gettext-go"
 	"github.com/sinnrrr/schoolbot/config"
 	"github.com/sinnrrr/schoolbot/db"
 	tb "gopkg.in/tucnak/telebot.v2"
@@ -9,7 +10,10 @@ import (
 	"os"
 )
 
-var bot *tb.Bot
+var (
+	bot *tb.Bot
+	l = gettext.New("general", "locale").SetLanguage(os.Getenv("DEFAULT_LANGUAGE"))
+)
 
 func main() {
 	err := db.Init()

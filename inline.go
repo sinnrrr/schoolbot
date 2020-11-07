@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	homeworkAction     = 1
-	alertAction        = 2
-	createLessonAction = 3
+	homeworkAction        = 1
+	alertAction           = 2
+	createTimetableAction = 3
 )
 
 var (
@@ -22,23 +22,23 @@ var (
 	homeworkInlineButton = tb.InlineButton{
 		Data:   strconv.Itoa(homeworkAction),
 		Unique: "newHomework",
-		Text:   "Homework",
+		Text:   l.Gettext("Homework"),
 	}
 
 	alertInlineButton = tb.InlineButton{
 		Data:   strconv.Itoa(alertAction),
 		Unique: "newAlert",
-		Text:   "Alert",
+		Text:   l.Gettext("Alert"),
 	}
 
-	createLessonInlineButton = tb.InlineButton{
-		Data:   strconv.Itoa(createLessonAction),
-		Unique: "createLesson",
-		Text:   "Create schedule",
+	createTimetableInlineButton = tb.InlineButton{
+		Data:   strconv.Itoa(createTimetableAction),
+		Unique: "createTimetable",
+		Text:   l.Gettext("Create timetable"),
 	}
 
-	createLessonInlineKeyboard = &tb.ReplyMarkup{
-		InlineKeyboard: [][]tb.InlineButton{{createLessonInlineButton}},
+	createTimetableInlineKeyboard = &tb.ReplyMarkup{
+		InlineKeyboard: [][]tb.InlineButton{{createTimetableInlineButton}},
 	}
 
 	operationInlineKeyboard = &tb.ReplyMarkup{
@@ -50,11 +50,11 @@ var (
 )
 
 func registerInlineKeyboard() {
-	bot.Handle(&createLessonInlineButton, createLessonInlineButtonHandler)
+	l.SetDomain("dialogue")
 
+	bot.Handle(&createTimetableInlineButton, createTimetableInlineButtonHandler)
 	bot.Handle(&homeworkInlineButton, operationInlineButtonHandler)
 	bot.Handle(&alertInlineButton, operationInlineButtonHandler)
-
 	bot.Handle(&mondayInlineButton, weekdayInlineButtonHandler)
 	bot.Handle(&tuesdayInlineButton, weekdayInlineButtonHandler)
 	bot.Handle(&wednesdayInlineButton, weekdayInlineButtonHandler)
@@ -64,7 +64,7 @@ func registerInlineKeyboard() {
 	bot.Handle(&weekdayBackInlineButton, weekdayInlineButtonHandler)
 }
 
-func createLessonInlineButtonHandler(c *tb.Callback) {
+func createTimetableInlineButtonHandler(c *tb.Callback) {
 	err := db.SetDialogueState(c.Sender.ID, ScheduleRequest)
 	if err != nil {
 		panic(err)
@@ -80,18 +80,12 @@ func createLessonInlineButtonHandler(c *tb.Callback) {
 	handleSendError(
 		bot.Edit(
 			c.Message,
-			`Enter the start and the end time of your lessons using the scheme: "<START_HOURS>:<START_MINUTES>[space]<END_HOURS>:<END_MINUTES>[enter]`+
-				"\n"+
-				"For example: "+
-				"\n"+
-				"\n"+
-				"8:30 9:10"+
-				"\n"+
-				"9:20 9:50"+
-				"\n"+
-				"10:00 10:40"+
-				"\n"+
-				"10:20 11:00",
+			string(
+				l.DGetdata(
+					"examples",
+					"lessons_enter.txt",
+				),
+			),
 		),
 	)
 }
@@ -107,7 +101,7 @@ func operationInlineButtonHandler(c *tb.Callback) {
 	handleSendError(
 		bot.Edit(
 			c.Message,
-			"Choose the day of the week ;)",
+			l.Gettext("Choose the day of the week ;)"),
 			generateWeekdayInlineKeyboard(c.Data),
 		),
 	)

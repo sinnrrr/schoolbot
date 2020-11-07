@@ -37,7 +37,7 @@ var (
 	weekdayBackInlineButton = tb.InlineButton{
 		Unique: "weekday_back",
 		Data:   "back",
-		Text:   "Back",
+		Text:   l.Gettext("Back"),
 	}
 )
 
@@ -51,6 +51,7 @@ func defineWeekdayInlineButtons(action string) {
 		saturdayDate  time.Time
 	)
 
+	l.SetDomain("weekdays")
 	currentDate := time.Now()
 
 	actionInt, err := strconv.ParseInt(action, 10, 8)
@@ -103,12 +104,12 @@ func defineWeekdayInlineButtons(action string) {
 		fridayDate = thursdayDate.AddDate(0, 0, 1)
 	}
 
-	mondayInlineButton.Text = templates.WeekdayInlineButtonText("Monday", mondayDate)
-	tuesdayInlineButton.Text = templates.WeekdayInlineButtonText("Tuesday", tuesdayDate)
-	wednesdayInlineButton.Text = templates.WeekdayInlineButtonText("Wednesday", wednesdayDate)
-	thursdayInlineButton.Text = templates.WeekdayInlineButtonText("Thursday", thursdayDate)
-	fridayInlineButton.Text = templates.WeekdayInlineButtonText("Friday", fridayDate)
-	saturdayInlineButton.Text = templates.WeekdayInlineButtonText("Saturday", saturdayDate)
+	mondayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Monday"), mondayDate)
+	tuesdayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Tuesday"), tuesdayDate)
+	wednesdayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Wednesday"), wednesdayDate)
+	thursdayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Thursday"), thursdayDate)
+	fridayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Friday"), fridayDate)
+	saturdayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Saturday"), saturdayDate)
 
 	mondayInlineButton.Data = templates.WeekdayInlineButtonData(mondayDate.Unix(), actionInt)
 	tuesdayInlineButton.Data = templates.WeekdayInlineButtonData(tuesdayDate.Unix(), actionInt)
@@ -119,6 +120,7 @@ func defineWeekdayInlineButtons(action string) {
 }
 
 func generateWeekdayInlineKeyboard(action string) *tb.ReplyMarkup {
+	l.SetDomain("weekday")
 	defineWeekdayInlineButtons(action)
 
 	return &tb.ReplyMarkup{
@@ -132,11 +134,13 @@ func generateWeekdayInlineKeyboard(action string) *tb.ReplyMarkup {
 }
 
 func weekdayInlineButtonHandler(c *tb.Callback) {
+	l.SetDomain("dialogue")
+
 	if c.Data == "back" {
 		handleSendError(
 			bot.Edit(
 				c.Message,
-				"What do you want to create today, master?",
+				l.Gettext("What do you want to create today, master?"),
 				operationInlineKeyboard,
 			),
 		)
@@ -164,7 +168,7 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 			handleSendError(
 				bot.Edit(
 					c.Message,
-					"Send me subject name",
+					l.Gettext("Send me subject name"),
 				),
 			)
 		case alertAction:
@@ -184,9 +188,12 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 			handleSendError(
 				bot.Edit(
 					c.Message,
-					"Now, send me time in 24-hour format."+
-						" Note, that it should be rounded to 10 in order to properly work." +
-						" Example: 15:10 or 8:40",
+					string(
+						l.DGetdata(
+							"examples",
+							"time_enter.txt",
+						),
+					),
 				),
 			)
 		}

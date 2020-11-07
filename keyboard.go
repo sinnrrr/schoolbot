@@ -9,14 +9,16 @@ import (
 var (
 	keyboard = &tb.ReplyMarkup{ResizeReplyKeyboard: true}
 
-	newButton       = keyboard.Text("New")
-	homeworkButton  = keyboard.Text("Homeworks")
-	timetableButton = keyboard.Text("Timetable")
-	alertButton     = keyboard.Text("Alerts")
-	settingsButton  = keyboard.Text("Settings")
+	newButton       = keyboard.Text(l.Gettext("New"))
+	homeworkButton  = keyboard.Text(l.Gettext("Homeworks"))
+	timetableButton = keyboard.Text(l.Gettext("Timetable"))
+	alertButton     = keyboard.Text(l.Gettext("Alerts"))
+	settingsButton  = keyboard.Text(l.Gettext("Settings"))
 )
 
 func registerKeyboard() {
+	l.SetDomain("dialogue")
+
 	keyboard.Reply(
 		keyboard.Row(newButton),
 		keyboard.Row(homeworkButton, timetableButton),
@@ -34,7 +36,7 @@ func newButtonHandler(m *tb.Message) {
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"What do you want to create today, master?",
+			l.Gettext("What do you want to create today, master?"),
 			operationInlineKeyboard,
 		),
 	)
@@ -80,8 +82,8 @@ func timetableButtonHandler(m *tb.Message) {
 		handleSendError(
 			bot.Send(
 				m.Chat,
-				"Any timetable has been found",
-				createLessonInlineKeyboard,
+				l.Gettext("Timetable for your class hasn't been created yet"),
+				createTimetableInlineKeyboard,
 			),
 		)
 	} else {
@@ -105,7 +107,7 @@ func settingsButtonHandler(m *tb.Message) {
 	handleSendError(
 		bot.Send(
 			m.Chat,
-			"Coming soon",
+			l.DGettext("general", "Coming soon :)"),
 		),
 	)
 }
