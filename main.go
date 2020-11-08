@@ -42,6 +42,11 @@ func main() {
 			panic(err)
 		}
 
+		err = syncSupportedLanguage()
+		if err != nil {
+			panic(err)
+		}
+
 		registerInlineKeyboard()
 		registerKeyboard()
 

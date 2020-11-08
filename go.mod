@@ -13,6 +13,7 @@ require (
 	github.com/neo4j/neo4j-go-driver v1.8.3
 	github.com/nicksnyder/go-i18n/v2 v2.1.1
 	github.com/stretchr/testify v1.6.1 // indirect
+	golang.org/x/text v0.3.4
 	gopkg.in/tucnak/telebot.v2 v2.3.4
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 )

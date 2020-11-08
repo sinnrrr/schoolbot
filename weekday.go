@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"github.com/sinnrrr/schoolbot/db"
-	"github.com/sinnrrr/schoolbot/templates"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"strconv"
 	"time"
@@ -104,19 +103,19 @@ func defineWeekdayInlineButtons(action string) {
 		fridayDate = thursdayDate.AddDate(0, 0, 1)
 	}
 
-	mondayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Monday"), mondayDate)
-	tuesdayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Tuesday"), tuesdayDate)
-	wednesdayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Wednesday"), wednesdayDate)
-	thursdayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Thursday"), thursdayDate)
-	fridayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Friday"), fridayDate)
-	saturdayInlineButton.Text = templates.WeekdayInlineButtonText(l.Gettext("Saturday"), saturdayDate)
+	mondayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Monday"), mondayDate)
+	tuesdayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Tuesday"), tuesdayDate)
+	wednesdayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Wednesday"), wednesdayDate)
+	thursdayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Thursday"), thursdayDate)
+	fridayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Friday"), fridayDate)
+	saturdayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Saturday"), saturdayDate)
 
-	mondayInlineButton.Data = templates.WeekdayInlineButtonData(mondayDate.Unix(), actionInt)
-	tuesdayInlineButton.Data = templates.WeekdayInlineButtonData(tuesdayDate.Unix(), actionInt)
-	wednesdayInlineButton.Data = templates.WeekdayInlineButtonData(wednesdayDate.Unix(), actionInt)
-	thursdayInlineButton.Data = templates.WeekdayInlineButtonData(thursdayDate.Unix(), actionInt)
-	fridayInlineButton.Data = templates.WeekdayInlineButtonData(fridayDate.Unix(), actionInt)
-	saturdayInlineButton.Data = templates.WeekdayInlineButtonData(saturdayDate.Unix(), actionInt)
+	mondayInlineButton.Data = WeekdayInlineButtonData(mondayDate.Unix(), actionInt)
+	tuesdayInlineButton.Data = WeekdayInlineButtonData(tuesdayDate.Unix(), actionInt)
+	wednesdayInlineButton.Data = WeekdayInlineButtonData(wednesdayDate.Unix(), actionInt)
+	thursdayInlineButton.Data = WeekdayInlineButtonData(thursdayDate.Unix(), actionInt)
+	fridayInlineButton.Data = WeekdayInlineButtonData(fridayDate.Unix(), actionInt)
+	saturdayInlineButton.Data = WeekdayInlineButtonData(saturdayDate.Unix(), actionInt)
 }
 
 func generateWeekdayInlineKeyboard(action string) *tb.ReplyMarkup {
@@ -125,10 +124,9 @@ func generateWeekdayInlineKeyboard(action string) *tb.ReplyMarkup {
 
 	return &tb.ReplyMarkup{
 		InlineKeyboard: [][]tb.InlineButton{
-			{mondayInlineButton, tuesdayInlineButton},
-			{wednesdayInlineButton, thursdayInlineButton},
-			{fridayInlineButton, saturdayInlineButton},
-			{weekdayBackInlineButton},
+			{mondayInlineButton, thursdayInlineButton},
+			{tuesdayInlineButton, fridayInlineButton},
+			{wednesdayInlineButton, saturdayInlineButton},
 		},
 	}
 }

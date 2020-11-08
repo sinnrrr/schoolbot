@@ -19,6 +19,23 @@ var (
 		Date   int64
 	}
 
+	languageInlineButton = tb.InlineButton{
+		Unique: "language",
+		Text: "Language",
+	}
+
+	ukrainianInlineButton = tb.InlineButton{
+		Data:   "uk",
+		Unique: "ukrainian",
+		Text:   "Ukrainian",
+	}
+
+	englishInlineButton = tb.InlineButton{
+		Data:   "en",
+		Unique: "english",
+		Text:   "English",
+	}
+
 	homeworkInlineButton = tb.InlineButton{
 		Data:   strconv.Itoa(homeworkAction),
 		Unique: "newHomework",
@@ -47,6 +64,19 @@ var (
 			{alertInlineButton},
 		},
 	}
+
+	settingsInlineKeyboard = &tb.ReplyMarkup{
+		InlineKeyboard: [][]tb.InlineButton{
+			{languageInlineButton},
+		},
+	}
+
+	languagesInlineKeyboard = &tb.ReplyMarkup{
+		InlineKeyboard: [][]tb.InlineButton{
+			{englishInlineButton},
+			{ukrainianInlineButton},
+		},
+	}
 )
 
 func registerInlineKeyboard() {
@@ -62,6 +92,9 @@ func registerInlineKeyboard() {
 	bot.Handle(&fridayInlineButton, weekdayInlineButtonHandler)
 	bot.Handle(&saturdayInlineButton, weekdayInlineButtonHandler)
 	bot.Handle(&weekdayBackInlineButton, weekdayInlineButtonHandler)
+	bot.Handle(&languageInlineButton, languageInlineButtonHandler)
+	bot.Handle(&englishInlineButton, languageInlineButtonHandler)
+	bot.Handle(&ukrainianInlineButton, languageInlineButtonHandler)
 }
 
 func createTimetableInlineButtonHandler(c *tb.Callback) {
@@ -83,9 +116,21 @@ func createTimetableInlineButtonHandler(c *tb.Callback) {
 			string(
 				l.DGetdata(
 					"examples",
-					"lessons_enter.txt",
+					"schedule_enter.txt",
 				),
 			),
+		),
+	)
+}
+
+func languageInlineButtonHandler(c *tb.Callback) {
+	l.SetLanguage(c.Data)
+
+	handleSendError(
+		bot.Edit(
+			c.Message,
+			l.Gettext("Language was successfully changed"),
+			keyboard,
 		),
 	)
 }
@@ -106,3 +151,26 @@ func operationInlineButtonHandler(c *tb.Callback) {
 		),
 	)
 }
+
+//func generateLanguagesSlice() {
+//	for _, languageTag := range supportedLocale {
+//		languagesSlice[languageTag] = tb.InlineButton{
+//			Unique: strings.ToLower(languageTag.String()),
+//			Text: languageTag.String(),
+//			Data: languageTag.String(),
+//		}
+//	}
+//
+//	for _, button := range languagesSlice {
+//		bot.Handle(&button, languageInlineButtonHandler)
+//	}
+//}
+
+//func languageInlineButtonHandler(c *tb.Callback) {
+//	handleSendError(
+//		bot.Send(
+//			c.Sender,
+//			"Languge",
+//		),
+//	)
+//}

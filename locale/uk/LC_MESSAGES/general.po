@@ -19,6 +19,9 @@ msgstr "Оголошення"
 msgid "Timetable"
 msgstr "Розклад"
 
+msgid "Language"
+msgstr "Мова"
+
 msgid "Settings"
 msgstr "Налаштування"
 
@@ -33,3 +36,12 @@ msgstr "Додати до групи"
 
 msgid "Go to personal chat"
 msgstr "У приватний чат"
+
+msgid "Deadline"
+msgstr "Дедлайн"
+
+msgid "Task"
+msgstr "Завдання"
+
+msgid "Onto"
+msgstr "На"

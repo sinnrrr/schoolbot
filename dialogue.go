@@ -45,7 +45,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Sorry, but I don't understand you. Їм сало...",
+					l.Gettext("Sorry, but I don't understand you. Їм сало..."),
 				),
 			)
 		case SubjectRequest:
@@ -58,7 +58,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Enter task now",
+					l.Gettext("Enter task now"),
 				),
 			)
 		case TaskRequest:
@@ -77,7 +77,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Homework from subject was successfully created. Something else?",
+					l.Gettext("Homework from subject was successfully created. Something else?"),
 					keyboard,
 				),
 			)
@@ -91,7 +91,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Now, send me an alert text",
+					l.Gettext("Now, send me an alert text"),
 				),
 			)
 		case AlertContentRequest:
@@ -109,7 +109,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Alert was successfully created",
+					l.Gettext("Alert was successfully created"),
 					keyboard,
 				),
 			)
@@ -129,13 +129,12 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Sender,
-					"Enter lessons for monday in multiline mode. " +
-						"For example:\n"+
-						"English\n" +
-						"Math\n" +
-						"Geography\n" +
-						"Physics\n" +
-						"Biology\n",
+					string(
+						l.DGetdata(
+							"examples",
+							"lessons_enter.txt",
+						),
+					),
 				),
 			)
 		case MondayRequest:
@@ -224,7 +223,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Gotcha! What's next?",
+					l.Gettext("Gotcha! What's next?"),
 				),
 			)
 		}

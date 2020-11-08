@@ -1,0 +1,53 @@
+msgid "Go ahead, tweak me"
+msgstr "Ну давай, налаштуй мене"
+
+msgid "Enter task now"
+msgstr "А тепер введи завдання"
+
+msgid "Gotcha! What's next?"
+msgstr "Впіймав всі дані! Що далі?"
+
+msgid "Send me subject name"
+msgstr "Надішли мені назву предмету"
+
+msgid "Choose the day of the week ;)"
+msgstr "Обери день тижня ;)"
+
+msgid "Sorry, but I don't understand you. Їм сало..."
+msgstr "Сорі, не розумію тебе. Це певно із-за цих адмінів.. накормили мене салом..."
+
+msgid "Something went wrong with bot. Please, try again later."
+msgstr "Щось не так з ботом... Оце ж адміни накосячили..."
+
+msgid "What do you want to create today, master?"
+msgstr "Що хочеш зробити сьогодні, повелителю?"
+
+msgid "Timetable for your class hasn't been created yet"
+msgstr "Розклад для твого класу ще не був створений"
+
+msgid "You have already accepted the invite from this group :p"
+msgstr "Ви вже прийняли запрошення з цієї групи :p"
+
+msgid "Hello, how can I help my good old friend? :)"
+msgstr "Привіт, як я можу допомогти тобі, друзяко? :)"
+
+msgid "Your group have already records in our database"
+msgstr "Вам пощастило! Ліниві адміни ще не стерли вашу групу з бази даних!"
+
+msgid "Hello, how can I help in your group?"
+msgstr "Привіт, чим можу допомогти у цій групі?"
+
+msgid "Now, send me an alert text"
+msgstr "Тепер надішли мені текст оголошення"
+
+msgid "Alert was successfully created"
+msgstr "Оголошення було записане успішно. Що ще?)"
+
+msgid "To get things started, please add me to your class group :]"
+msgstr "Для того, щоб почати нашу співпрацю, додай мене у вашу класну групу :]"
+
+msgid "Homework from subject was successfully created. Something else?"
+msgstr "Домашнє завдання з даного предмета було успішно записане в бота. Можливо щось ще, шеф?"
+
+msgid "Hey guys! Click this button in order to have access to create and read homeworks and alerts from ths group ;p"
+msgstr "Привіт комради! Натисніть дану кнопку, щоб зареєструвати себе як одного з учнів даного класу. Без цього наща робота не буде можливою"

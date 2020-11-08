@@ -61,6 +61,18 @@ func StudentSession(studentID int) (map[string]interface{}, error) {
 	return session, result.Err()
 }
 
+func UpdateStudentSession(data map[string]interface{}) (map[string]interface{}, error) {
+	_, err := Session.Run(
+		"MERGE (s:Student { tg_id: $tg_id, dialogue_state: $dialogue_state, language_code: $language_code })",
+		data,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
 func DialogueState(studentID int) (int8, error) {
 	session, err := StudentSession(studentID)
 	if err != nil {

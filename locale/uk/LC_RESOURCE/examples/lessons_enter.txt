@@ -1,0 +1,8 @@
+Введи твій розпорядок уроків на понеділок
+
+До прикладу:
+English
+Math
+Geography
+Physics
+Biology

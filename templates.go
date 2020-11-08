@@ -1,4 +1,4 @@
-package templates
+package main
 
 import (
 	"fmt"
@@ -13,20 +13,18 @@ const (
 	weekdayInlineButtonText = "%s (%d.%d)"
 	weekdayInlineButtonData = `{"date":%d,"action":%d}`
 
-	actionInlineButtonData = `{"id":%d,"action":%d}`
-
 	homeworkReply = "\n" +
 		"*%d.* _%s_" +
 		"\n" +
-		"*Task:* %s" +
+		"*%s:* %s" +
 		"\n" +
-		"*Deadline:* %d.%d.%d" +
+		"*%s:* %d.%d.%d" +
 		"\n"
 
 	alertReply = "\n" +
 		"*%d.* _%s_" +
 		"\n" +
-		"*Onto:* %d.%d.%d %d:%d" +
+		"*%s:* %d.%d.%d %d:%d" +
 		"\n"
 
 	cronAlert = "*Alert*" +
@@ -98,6 +96,8 @@ func GenerateTimetableMessage(subjects map[string]interface{}) string {
 func GenerateAlertMessage(alerts []map[string]interface{}) string {
 	var reply = ""
 
+	l.SetDomain("general")
+
 	if alerts != nil {
 		for index, alert := range alerts {
 			alertDate := time.Unix(alert["date"].(int64), 0)
@@ -106,6 +106,7 @@ func GenerateAlertMessage(alerts []map[string]interface{}) string {
 				alertReply,
 				index+1,
 				alert["content"].(string),
+				l.Gettext("Onto"),
 				alertDate.Day(),
 				alertDate.Month(),
 				alertDate.Year(),
@@ -123,6 +124,8 @@ func GenerateAlertMessage(alerts []map[string]interface{}) string {
 func GenerateHomeworkMessage(homeworks []map[string]interface{}) string {
 	var reply = ""
 
+	l.SetDomain("general")
+
 	if homeworks != nil {
 		for index, homework := range homeworks {
 			homeworkDeadline := time.Unix(homework["deadline"].(int64), 0)
@@ -131,7 +134,9 @@ func GenerateHomeworkMessage(homeworks []map[string]interface{}) string {
 				homeworkReply,
 				index+1,
 				homework["subject"].(string),
+				l.Gettext("Task"),
 				homework["task"].(string),
+				l.Gettext("Deadline"),
 				homeworkDeadline.Day(),
 				homeworkDeadline.Month(),
 				homeworkDeadline.Year(),

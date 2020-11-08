@@ -5,7 +5,6 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
 	"github.com/sinnrrr/schoolbot/db"
-	"github.com/sinnrrr/schoolbot/templates"
 	"net/http"
 	"os"
 	"time"
@@ -40,17 +39,17 @@ func cronAlerts() {
 			alertDate := time.Unix(alert["date"].(int64), 0)
 
 			if alertDate.Hour() == currentDate.Hour() && alertDate.Minute() == currentDate.Minute() {
-				fmt.Println(templates.GenerateMessageURL(
+				fmt.Println(GenerateMessageURL(
 					os.Getenv("BOT_TOKEN"),
 					user["id"].(int),
-					templates.GenerateCronAlert(alert["content"].(string)),
+					GenerateCronAlert(alert["content"].(string)),
 				))
 
 				_, err := http.Get(
-					templates.GenerateMessageURL(
+					GenerateMessageURL(
 						os.Getenv("BOT_TOKEN"),
 						user["id"].(int),
-						templates.GenerateCronAlert(alert["content"].(string)),
+						GenerateCronAlert(alert["content"].(string)),
 					),
 				)
 				if err != nil {
