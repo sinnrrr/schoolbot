@@ -7,19 +7,18 @@ import (
 
 var (
 	keyboard         = &tb.ReplyMarkup{ResizeReplyKeyboard: true, OneTimeKeyboard: true}
-	settingsKeyboard = &tb.ReplyMarkup{ResizeReplyKeyboard: true, OneTimeKeyboard: true}
-
-	newButton       = keyboard.Text(l.Gettext("New"))
-	homeworkButton  = keyboard.Text(l.Gettext("Homeworks"))
-	timetableButton = keyboard.Text(l.Gettext("Timetable"))
-	alertButton     = keyboard.Text(l.Gettext("Alerts"))
-	settingsButton  = keyboard.Text(l.Gettext("Settings"))
-
-	languageButton = keyboard.Text(l.Gettext("Language"))
 )
 
 func registerKeyboard() {
-	l.SetDomain("dialogue")
+	l.SetDomain("general")
+
+	var (
+		newButton       = keyboard.Text(l.Gettext("New"))
+		homeworkButton  = keyboard.Text(l.Gettext("Homeworks"))
+		timetableButton = keyboard.Text(l.Gettext("Timetable"))
+		alertButton     = keyboard.Text(l.Gettext("Alerts"))
+		settingsButton  = keyboard.Text(l.Gettext("Settings"))
+	)
 
 	keyboard.Reply(
 		keyboard.Row(newButton),
@@ -27,17 +26,13 @@ func registerKeyboard() {
 		keyboard.Row(alertButton, settingsButton),
 	)
 
-	settingsKeyboard.Reply(
-		keyboard.Row(languageButton),
-	)
+	l.SetDomain("dialogue")
 
 	bot.Handle(&newButton, newButtonHandler)
 	bot.Handle(&homeworkButton, homeworkButtonHandler)
 	bot.Handle(&timetableButton, timetableButtonHandler)
 	bot.Handle(&alertButton, alertButtonHandler)
 	bot.Handle(&settingsButton, settingsButtonHandler)
-
-	bot.Handle(&languageButton, languageButtonHandler)
 }
 
 func newButtonHandler(m *tb.Message) {
@@ -116,17 +111,7 @@ func settingsButtonHandler(m *tb.Message) {
 		bot.Send(
 			m.Chat,
 			l.Gettext("Go ahead, tweak me"),
-			settingsKeyboard,
-		),
-	)
-}
-
-func languageButtonHandler(m *tb.Message) {
-	handleSendError(
-		bot.Send(
-			m.Chat,
-			"Choose language",
-			languagesInlineKeyboard,
+			settingsInlineKeyboard,
 		),
 	)
 }

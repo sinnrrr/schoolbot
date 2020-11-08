@@ -1,11 +1,17 @@
 msgid "Go ahead, tweak me"
 msgstr "Ну давай, налаштуй мене"
 
+msgid "Choose language"
+msgstr "Обери мову"
+
 msgid "Enter task now"
 msgstr "А тепер введи завдання"
 
 msgid "Gotcha! What's next?"
 msgstr "Впіймав всі дані! Що далі?"
+
+msgid "Language was successfully changed"
+msgstr "Мова була успішно змінена"
 
 msgid "Send me subject name"
 msgstr "Надішли мені назву предмету"

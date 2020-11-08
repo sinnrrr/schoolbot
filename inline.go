@@ -19,40 +19,48 @@ var (
 		Date   int64
 	}
 
-	languageInlineButton = tb.InlineButton{
-		Unique: "language",
-		Text: "Language",
-	}
+	createTimetableInlineKeyboard *tb.ReplyMarkup
+	operationInlineKeyboard *tb.ReplyMarkup
+	languagesInlineKeyboard *tb.ReplyMarkup
+	settingsInlineKeyboard *tb.ReplyMarkup
+)
 
-	ukrainianInlineButton = tb.InlineButton{
-		Data:   "uk",
-		Unique: "ukrainian",
-		Text:   "Ukrainian",
-	}
+func registerInlineKeyboard() {
+	var (
+		languageInlineButton = tb.InlineButton{
+			Unique: "language",
+			Text:   l.Gettext("Language"),
+		}
 
-	englishInlineButton = tb.InlineButton{
-		Data:   "en",
-		Unique: "english",
-		Text:   "English",
-	}
+		ukrainianInlineButton = tb.InlineButton{
+			Data:   "uk",
+			Unique: "ukrainian",
+			Text:   l.Gettext("Ukrainian"),
+		}
 
-	homeworkInlineButton = tb.InlineButton{
-		Data:   strconv.Itoa(homeworkAction),
-		Unique: "newHomework",
-		Text:   l.Gettext("Homework"),
-	}
+		englishInlineButton = tb.InlineButton{
+			Data:   "en",
+			Unique: "english",
+			Text:   l.Gettext("English"),
+		}
 
-	alertInlineButton = tb.InlineButton{
-		Data:   strconv.Itoa(alertAction),
-		Unique: "newAlert",
-		Text:   l.Gettext("Alert"),
-	}
+		homeworkInlineButton = tb.InlineButton{
+			Data:   strconv.Itoa(homeworkAction),
+			Unique: "newHomework",
+		}
 
-	createTimetableInlineButton = tb.InlineButton{
-		Data:   strconv.Itoa(createTimetableAction),
-		Unique: "createTimetable",
-		Text:   l.Gettext("Create timetable"),
-	}
+		alertInlineButton = tb.InlineButton{
+			Data:   strconv.Itoa(alertAction),
+			Unique: "newAlert",
+			Text:   l.Gettext("Alert"),
+		}
+
+		createTimetableInlineButton = tb.InlineButton{
+			Data:   strconv.Itoa(createTimetableAction),
+			Unique: "createTimetable",
+			Text:   l.Gettext("Create timetable"),
+		}
+	)
 
 	createTimetableInlineKeyboard = &tb.ReplyMarkup{
 		InlineKeyboard: [][]tb.InlineButton{{createTimetableInlineButton}},
@@ -77,9 +85,7 @@ var (
 			{ukrainianInlineButton},
 		},
 	}
-)
 
-func registerInlineKeyboard() {
 	l.SetDomain("dialogue")
 
 	bot.Handle(&createTimetableInlineButton, createTimetableInlineButtonHandler)
@@ -124,13 +130,33 @@ func createTimetableInlineButtonHandler(c *tb.Callback) {
 }
 
 func languageInlineButtonHandler(c *tb.Callback) {
-	l.SetLanguage(c.Data)
+	err := bot.Respond(c, &tb.CallbackResponse{
+		ShowAlert: false,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	if c.Data != "" {
+		l.SetLanguage(c.Data)
+
+		registerKeyboard()
+		registerInlineKeyboard()
+
+		handleSendError(
+			bot.Send(
+				c.Sender,
+				l.Gettext("Language was successfully changed"),
+				keyboard,
+			),
+		)
+	}
 
 	handleSendError(
 		bot.Edit(
 			c.Message,
-			l.Gettext("Language was successfully changed"),
-			keyboard,
+			l.Gettext("Choose language"),
+			languagesInlineKeyboard,
 		),
 	)
 }
@@ -151,26 +177,3 @@ func operationInlineButtonHandler(c *tb.Callback) {
 		),
 	)
 }
-
-//func generateLanguagesSlice() {
-//	for _, languageTag := range supportedLocale {
-//		languagesSlice[languageTag] = tb.InlineButton{
-//			Unique: strings.ToLower(languageTag.String()),
-//			Text: languageTag.String(),
-//			Data: languageTag.String(),
-//		}
-//	}
-//
-//	for _, button := range languagesSlice {
-//		bot.Handle(&button, languageInlineButtonHandler)
-//	}
-//}
-
-//func languageInlineButtonHandler(c *tb.Callback) {
-//	handleSendError(
-//		bot.Send(
-//			c.Sender,
-//			"Languge",
-//		),
-//	)
-//}

@@ -22,6 +22,12 @@ msgstr "Розклад"
 msgid "Language"
 msgstr "Мова"
 
+msgid "Ukrainian"
+msgstr "Українська"
+
+msgid "English"
+msgstr "Англійська"
+
 msgid "Settings"
 msgstr "Налаштування"
 
@@ -39,6 +45,9 @@ msgstr "У приватний чат"
 
 msgid "Deadline"
 msgstr "Дедлайн"
+
+msgid "Language"
+msgstr "Мова"
 
 msgid "Task"
 msgstr "Завдання"
