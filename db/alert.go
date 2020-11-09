@@ -1,21 +1,16 @@
 package db
 
 import (
-	"fmt"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
-	"strconv"
-	"strings"
-	"time"
+	"github.com/sinnrrr/schoolbot/utils"
 )
 
 func QueryAlert(studentID int) ([]map[string]interface{}, error) {
 	var alerts []map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:BELONGS_TO]-(a:Alert)"+
-			"\n"+
-			"RETURN a"+
-			"\n"+
+		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(:Class)<-[:BELONGS_TO]-(a:Alert)\n"+
+			"RETURN a\n"+
 			"ORDER BY a.date",
 		map[string]interface{}{
 			"tg_id": studentID,
@@ -38,18 +33,15 @@ func CreateAlert(
 ) (map[string]interface{}, error) {
 	var createdAlert map[string]interface{}
 
-	alertTime, err := parseAlertTime(alert)
+	alertTime, err := utils.ParseTime(alert)
 	if err != nil {
 		return nil, err
 	}
 
 	result, err := Session.Run(
-		"MATCH (s:Student { tg_id: $tg_id })"+
-			"\n"+
-			"MATCH (s)-[:STUDYING_IN]->(c:Class)"+
-			"\n"+
-			"CREATE (s)-[:CREATED]->(a:Alert { date: $date, content: $content })-[:BELONGS_TO]->(c)"+
-			"\n"+
+		"MATCH (s:Student { tg_id: $tg_id })\n"+
+			"MATCH (s)-[:STUDYING_IN]->(c:Class)\n"+
+			"CREATE (s)-[:CREATED]->(a:Alert { date: $date, content: $content })-[:BELONGS_TO]->(c)\n"+
 			"RETURN a",
 		map[string]interface{}{
 			"tg_id":   studentID,
@@ -68,37 +60,3 @@ func CreateAlert(
 	return createdAlert, result.Err()
 }
 
-func parseAlertTime(alert map[string]interface{}) (time.Time, error) {
-	parsedTime := strings.Split(alert["time"].(string), ":")
-	parsedHour, err := strconv.Atoi(parsedTime[0])
-	parsedMinute, err := strconv.Atoi(parsedTime[1])
-
-	err = validateTime(parsedHour, parsedMinute)
-	if err != nil {
-		return time.Time{}, err
-	}
-
-	parsedDate := time.Unix(alert["date"].(int64), 0)
-	return time.Date(
-		parsedDate.Year(),
-		parsedDate.Month(),
-		parsedDate.Day(),
-		parsedHour,
-		parsedMinute,
-		0,
-		0,
-		parsedDate.Location(),
-	), err
-}
-
-func validateTime(hour int, minute int) error {
-	if hour <= 23 && minute < 60 {
-		if minute % 10 != 0 {
-			return fmt.Errorf("minutes are not rounded to 10")
-		}
-
-		return nil
-	}
-
-	return fmt.Errorf("incorrect value")
-}

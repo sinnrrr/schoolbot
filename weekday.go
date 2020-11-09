@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"github.com/sinnrrr/schoolbot/db"
-	"github.com/sinnrrr/schoolbot/templates"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"strconv"
 	"time"
@@ -37,7 +36,7 @@ var (
 	weekdayBackInlineButton = tb.InlineButton{
 		Unique: "weekday_back",
 		Data:   "back",
-		Text:   "Back",
+		Text:   l.Gettext("Back"),
 	}
 )
 
@@ -51,6 +50,7 @@ func defineWeekdayInlineButtons(action string) {
 		saturdayDate  time.Time
 	)
 
+	l.SetDomain("weekdays")
 	currentDate := time.Now()
 
 	actionInt, err := strconv.ParseInt(action, 10, 8)
@@ -103,40 +103,42 @@ func defineWeekdayInlineButtons(action string) {
 		fridayDate = thursdayDate.AddDate(0, 0, 1)
 	}
 
-	mondayInlineButton.Text = templates.WeekdayInlineButtonText("Monday", mondayDate)
-	tuesdayInlineButton.Text = templates.WeekdayInlineButtonText("Tuesday", tuesdayDate)
-	wednesdayInlineButton.Text = templates.WeekdayInlineButtonText("Wednesday", wednesdayDate)
-	thursdayInlineButton.Text = templates.WeekdayInlineButtonText("Thursday", thursdayDate)
-	fridayInlineButton.Text = templates.WeekdayInlineButtonText("Friday", fridayDate)
-	saturdayInlineButton.Text = templates.WeekdayInlineButtonText("Saturday", saturdayDate)
+	mondayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Monday"), mondayDate)
+	tuesdayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Tuesday"), tuesdayDate)
+	wednesdayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Wednesday"), wednesdayDate)
+	thursdayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Thursday"), thursdayDate)
+	fridayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Friday"), fridayDate)
+	saturdayInlineButton.Text = WeekdayInlineButtonText(l.Gettext("Saturday"), saturdayDate)
 
-	mondayInlineButton.Data = templates.WeekdayInlineButtonData(mondayDate.Unix(), actionInt)
-	tuesdayInlineButton.Data = templates.WeekdayInlineButtonData(tuesdayDate.Unix(), actionInt)
-	wednesdayInlineButton.Data = templates.WeekdayInlineButtonData(wednesdayDate.Unix(), actionInt)
-	thursdayInlineButton.Data = templates.WeekdayInlineButtonData(thursdayDate.Unix(), actionInt)
-	fridayInlineButton.Data = templates.WeekdayInlineButtonData(fridayDate.Unix(), actionInt)
-	saturdayInlineButton.Data = templates.WeekdayInlineButtonData(saturdayDate.Unix(), actionInt)
+	mondayInlineButton.Data = WeekdayInlineButtonData(mondayDate.Unix(), actionInt)
+	tuesdayInlineButton.Data = WeekdayInlineButtonData(tuesdayDate.Unix(), actionInt)
+	wednesdayInlineButton.Data = WeekdayInlineButtonData(wednesdayDate.Unix(), actionInt)
+	thursdayInlineButton.Data = WeekdayInlineButtonData(thursdayDate.Unix(), actionInt)
+	fridayInlineButton.Data = WeekdayInlineButtonData(fridayDate.Unix(), actionInt)
+	saturdayInlineButton.Data = WeekdayInlineButtonData(saturdayDate.Unix(), actionInt)
 }
 
 func generateWeekdayInlineKeyboard(action string) *tb.ReplyMarkup {
+	l.SetDomain("weekday")
 	defineWeekdayInlineButtons(action)
 
 	return &tb.ReplyMarkup{
 		InlineKeyboard: [][]tb.InlineButton{
-			{mondayInlineButton, tuesdayInlineButton},
-			{wednesdayInlineButton, thursdayInlineButton},
-			{fridayInlineButton, saturdayInlineButton},
-			{weekdayBackInlineButton},
+			{mondayInlineButton, thursdayInlineButton},
+			{tuesdayInlineButton, fridayInlineButton},
+			{wednesdayInlineButton, saturdayInlineButton},
 		},
 	}
 }
 
 func weekdayInlineButtonHandler(c *tb.Callback) {
+	l.SetDomain("dialogue")
+
 	if c.Data == "back" {
 		handleSendError(
 			bot.Edit(
 				c.Message,
-				"What do you want to create today, master?",
+				l.Gettext("What do you want to create today, master?"),
 				operationInlineKeyboard,
 			),
 		)
@@ -164,7 +166,7 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 			handleSendError(
 				bot.Edit(
 					c.Message,
-					"Send me subject name",
+					l.Gettext("Send me subject name"),
 				),
 			)
 		case alertAction:
@@ -184,9 +186,12 @@ func weekdayInlineButtonHandler(c *tb.Callback) {
 			handleSendError(
 				bot.Edit(
 					c.Message,
-					"Now, send me time in 24-hour format."+
-						" Note, that it should be rounded to 10 in order to properly work." +
-						" Example: 15:10 or 8:40",
+					string(
+						l.DGetdata(
+							"examples",
+							"time_enter.txt",
+						),
+					),
 				),
 			)
 		}

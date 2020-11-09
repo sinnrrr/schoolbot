@@ -7,6 +7,8 @@ import (
 )
 
 func handleStartCommand() {
+	l.SetDomain("dialogue")
+
 	bot.Handle("/start", func(m *tb.Message) {
 		if m.Private() {
 			if m.Payload != "" {
@@ -24,7 +26,7 @@ func handleStartCommand() {
 					handleSendError(
 						bot.Send(
 							m.Sender,
-							"You have already accepted the invite from this group",
+							l.Gettext("You have already accepted the invite from this group :p"),
 							keyboard,
 						),
 					)
@@ -32,7 +34,7 @@ func handleStartCommand() {
 					handleSendError(
 						bot.Send(
 							m.Chat,
-							"Hello, how can I help?",
+							l.Gettext("Hello, how can I help my good old friend? :)"),
 							keyboard,
 						),
 					)
@@ -41,7 +43,7 @@ func handleStartCommand() {
 				handleSendError(
 					bot.Send(
 						m.Chat,
-						"To get started, please, add me to group",
+						l.Gettext("To get things started, please add me to your class group :]"),
 						&tb.ReplyMarkup{
 							InlineKeyboard: groupInviteKeys,
 						},
@@ -52,7 +54,7 @@ func handleStartCommand() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Hello, how can I help in your group?",
+					l.Gettext("Hello, how can I help in your group?"),
 					keyboard,
 				),
 			)
@@ -71,14 +73,14 @@ func handleOnAddedEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Your group have already records in our database",
+					l.Gettext("Your group have already records in our database"),
 				),
 			)
 		} else {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Invite to your personal chat",
+					l.Gettext("Hey guys! Click this button in order to have access to create and read homeworks and alerts from ths group ;p"),
 					&tb.ReplyMarkup{
 						InlineKeyboard: generatePersonalInviteKeys(m.Chat.ID),
 					},
@@ -90,7 +92,7 @@ func handleOnAddedEvent() {
 
 func handleSendError(m *tb.Message, err error) {
 	if err != nil {
-		bot.Send(m.Chat, "Something went wrong with bot. Please, try again later.")
+		bot.Send(m.Chat, l.Gettext("Something went wrong with bot. Please, try again later."))
 		panic(err)
 	}
 }

@@ -29,10 +29,8 @@ func QueryClassStudents(studentID int) ([]map[string]interface{}, error) {
 	var students []map[string]interface{}
 
 	result, err := Session.Run(
-		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(c:Class)"+
-			"\n"+
-			"MATCH (s:Student)-[:STUDYING_IN]->(c)"+
-			"\n"+
+		"MATCH (:Student { tg_id: $tg_id })-[:STUDYING_IN]->(c:Class)\n"+
+			"MATCH (s:Student)-[:STUDYING_IN]->(c)\n"+
 			"RETURN s",
 		map[string]interface{}{
 			"tg_id": studentID,

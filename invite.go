@@ -8,13 +8,13 @@ import (
 var (
 	personalInviteButton = tb.InlineButton{
 		Unique: "personInvite",
-		Text:   "Go to personal chat",
+		Text:   l.Gettext("Go to personal chat"),
 		URL:    "http://t.me/schoolhelperTheBot/?start=",
 	}
 
 	groupInviteButton = tb.InlineButton{
 		Unique: "groupInvite",
-		Text:   "Add to group",
+		Text:   l.Gettext("Add to group"),
 		URL:    "http://t.me/schoolhelperTheBot?startgroup=true",
 	}
 
