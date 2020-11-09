@@ -47,6 +47,7 @@ func registerInlineKeyboard() {
 		homeworkInlineButton = tb.InlineButton{
 			Data:   strconv.Itoa(homeworkAction),
 			Unique: "newHomework",
+			Text: l.Gettext("Homework"),
 		}
 
 		alertInlineButton = tb.InlineButton{
@@ -142,6 +143,8 @@ func languageInlineButtonHandler(c *tb.Callback) {
 
 		registerKeyboard()
 		registerInlineKeyboard()
+
+		bot.Delete(c.Message)
 
 		handleSendError(
 			bot.Send(

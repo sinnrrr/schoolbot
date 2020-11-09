@@ -55,6 +55,7 @@ func homeworkButtonHandler(m *tb.Message) {
 		bot.Send(
 			m.Chat,
 			GenerateHomeworkMessage(homeworks),
+			keyboard,
 			tb.ModeMarkdown,
 		),
 	)
@@ -70,12 +71,15 @@ func alertButtonHandler(m *tb.Message) {
 		bot.Send(
 			m.Chat,
 			GenerateAlertMessage(alerts),
+			keyboard,
 			tb.ModeMarkdown,
 		),
 	)
 }
 
 func timetableButtonHandler(m *tb.Message) {
+	l.SetDomain("dialogue")
+
 	timetable, err := db.StudentTimetable(m.Sender.ID)
 	if err != nil {
 		panic(err)
@@ -101,12 +105,15 @@ func timetableButtonHandler(m *tb.Message) {
 			bot.Send(
 				m.Chat,
 				GenerateScheduleMessage(timetable[1]),
+				keyboard,
 			),
 		)
 	}
 }
 
 func settingsButtonHandler(m *tb.Message) {
+	l.SetDomain("general")
+
 	handleSendError(
 		bot.Send(
 			m.Chat,

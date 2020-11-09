@@ -1,6 +1,3 @@
-msgid "Go ahead, tweak me"
-msgstr "Ну давай, налаштуй мене"
-
 msgid "Choose language"
 msgstr "Обери мову"
 
@@ -57,3 +54,18 @@ msgstr "Домашнє завдання з даного предмета бул�
 
 msgid "Hey guys! Click this button in order to have access to create and read homeworks and alerts from ths group ;p"
 msgstr "Привіт комради! Натисніть дану кнопку, щоб зареєструвати себе як одного з учнів даного класу. Без цього наща робота не буде можливою"
+
+msgid "Enter lessons the same way for tuesday"
+msgstr "Введи уроки подібним чином на вівторок"
+
+msgid "Enter the same way for wednesday"
+msgstr "Так само на середу"
+
+msgid "Enter the same way for thursday"
+msgstr "Тепер на четвер"
+
+msgid "Same for friday"
+msgstr "Таким ж чином на п’ятницю"
+
+msgid "And the last - saturday"
+msgstr "І останнє - на суботу"

@@ -148,7 +148,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Enter lessons the same way for tuesday",
+					l.Gettext("Enter lessons the same way for tuesday"),
 				),
 			)
 		case TuesdayRequest:
@@ -162,7 +162,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Enter the same way for wednesday",
+					l.Gettext("Enter the same way for wednesday"),
 				),
 			)
 		case WednesdayRequest:
@@ -176,7 +176,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Enter the same way for Thursday",
+					l.Gettext("Enter the same way for thursday"),
 				),
 			)
 		case ThursdayRequest:
@@ -190,7 +190,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"Same for friday",
+					l.Gettext("Same for friday"),
 				),
 			)
 		case FridayRequest:
@@ -204,7 +204,7 @@ func handleOnTextEvent() {
 			handleSendError(
 				bot.Send(
 					m.Chat,
-					"And the last - saturday",
+					l.Gettext("And the last - saturday"),
 				),
 			)
 		case SaturdayRequest:
@@ -224,6 +224,7 @@ func handleOnTextEvent() {
 				bot.Send(
 					m.Chat,
 					l.Gettext("Gotcha! What's next?"),
+					keyboard,
 				),
 			)
 		}

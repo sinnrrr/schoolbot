@@ -118,7 +118,7 @@ func GenerateAlertMessage(alerts []map[string]interface{}) string {
 		return reply
 	}
 
-	return "No alerts detected"
+	return l.Gettext("No alerts detected")
 }
 
 func GenerateHomeworkMessage(homeworks []map[string]interface{}) string {
@@ -146,7 +146,7 @@ func GenerateHomeworkMessage(homeworks []map[string]interface{}) string {
 		return reply
 	}
 
-	return "No homeworks detected"
+	return l.Gettext("No homeworks detected")
 }
 
 func WeekdayInlineButtonText(

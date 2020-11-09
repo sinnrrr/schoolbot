@@ -43,6 +43,15 @@ msgstr "Додати до групи"
 msgid "Go to personal chat"
 msgstr "У приватний чат"
 
+msgid "No homeworks detected"
+msgstr "Домашніх немає :)"
+
+msgid "No alerts detected"
+msgstr "Оголошень немає"
+
+msgid "Go ahead, tweak me"
+msgstr "Ну давай, налаштуй мене"
+
 msgid "Deadline"
 msgstr "Дедлайн"
 
