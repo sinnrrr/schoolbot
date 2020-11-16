@@ -24,7 +24,7 @@ const (
 	alertReply = "\n" +
 		"*%d.* _%s_" +
 		"\n" +
-		"*%s:* %d.%d.%d %d:%d" +
+		"*%s:* %d:%d (%d.%d.%d)" +
 		"\n"
 
 	cronAlert = "*Alert*" +
@@ -107,11 +107,11 @@ func GenerateAlertMessage(alerts []map[string]interface{}) string {
 				index+1,
 				alert["content"].(string),
 				l.Gettext("Onto"),
+				alertDate.Hour(),
+				alertDate.Minute(),
 				alertDate.Day(),
 				alertDate.Month(),
 				alertDate.Year(),
-				alertDate.Hour(),
-				alertDate.Minute(),
 			)
 		}
 

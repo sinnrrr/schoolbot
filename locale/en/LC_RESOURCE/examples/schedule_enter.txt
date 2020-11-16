@@ -1,0 +1,9 @@
+Enter the start end the end time of every subject you have using this scheme:
+
+<START_TIME>[space]<END_TIME>[enter]
+
+For example:
+8:30 9:10
+9:20 9:50
+10:00 10:40
+10:20 11:00

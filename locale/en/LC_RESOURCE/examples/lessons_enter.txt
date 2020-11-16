@@ -1,0 +1,7 @@
+Enter your subjects for monday
+
+For example:
+English
+Math
+Geography
+Physics
