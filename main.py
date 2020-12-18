@@ -1,26 +1,24 @@
-"""Bot implementation using Telethon library"""
+from dotenv import load_dotenv
+from aiogram import Bot, Dispatcher, executor, types
 
+import logging
 import os
 
-from dotenv import load_dotenv
-from telethon import TelegramClient, events, utils
-
 load_dotenv()
+logging.basicConfig(level=logging.INFO)
 
-API_ID = int(os.getenv("APP_ID"))
-API_HASH = os.getenv("APP_HASH")
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-APP_SESSION = os.getenv("APP_SESSION")
-
-bot = TelegramClient(APP_SESSION, API_ID, API_HASH).start(bot_token=BOT_TOKEN)
+bot = Bot(token=os.getenv("BOT_TOKEN"))
+dp = Dispatcher(bot)
 
 
-@bot.on(events.NewMessage(pattern=r'(?i).*\b(hello|hi)\b'))
-async def handler(event):
-    sender = await event.get_sender()
-    name = utils.get_display_name(sender)
-    print(name, 'said', event.text, '!')
+@dp.message_handler(commands=['start', 'help'])
+async def send_welcome(message: types.Message):
+    await message.reply("Hi!\nI'm EchoBot!\nPowered by aiogram.")
 
 
-with bot:
-    bot.run_until_disconnected()
+@dp.message_handler()
+async def echo(message: types.Message):
+    await message.answer(message.text)
+
+if __name__ == '__main__':
+    executor.start_polling(dp, skip_updates=True)
