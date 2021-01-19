@@ -36,6 +36,8 @@ func registerKeyboard() {
 }
 
 func newButtonHandler(m *tb.Message) {
+	l.SetDomain("dialogue")
+
 	handleSendError(
 		bot.Send(
 			m.Chat,

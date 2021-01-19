@@ -26,6 +26,8 @@ var (
 )
 
 func registerInlineKeyboard() {
+	l.SetDomain("general")
+
 	var (
 		languageInlineButton = tb.InlineButton{
 			Unique: "language",
@@ -154,6 +156,8 @@ func languageInlineButtonHandler(c *tb.Callback) {
 			),
 		)
 	}
+
+	l.SetDomain("dialogue")
 
 	handleSendError(
 		bot.Edit(

@@ -1,0 +1,7 @@
+Type in your lessons schedule for monday
+
+For example:
+English
+Math
+Geography
+Physics

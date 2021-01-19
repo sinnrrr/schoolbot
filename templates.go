@@ -60,14 +60,16 @@ func GenerateScheduleMessage(schedule map[string]interface{}) string {
 }
 
 func GenerateTimetableMessage(subjects map[string]interface{}) string {
+	l.SetDomain("weekdays")
+
 	var (
 		reply = []string{
-			"*" + time.Monday.String() + "*" + "\n",
-			"*" + time.Tuesday.String() + "*" + "\n",
-			"*" + time.Wednesday.String() + "*" + "\n",
-			"*" + time.Thursday.String() + "*" + "\n",
-			"*" + time.Friday.String() + "*" + "\n",
-			"*" + time.Saturday.String() + "*" + "\n",
+			"*" + l.Gettext(time.Monday.String()) + "*" + "\n",
+			"*" + l.Gettext(time.Tuesday.String()) + "*" + "\n",
+			"*" + l.Gettext(time.Wednesday.String()) + "*" + "\n",
+			"*" + l.Gettext(time.Thursday.String()) + "*" + "\n",
+			"*" + l.Gettext(time.Friday.String()) + "*" + "\n",
+			"*" + l.Gettext(time.Saturday.String()) + "*" + "\n",
 		}
 	)
 

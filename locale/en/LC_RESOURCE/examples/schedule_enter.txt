@@ -1,0 +1,9 @@
+Type in the start and end time of every lesson you have using the next scheme:
+
+<START_TIME>[space]<END_TIME>[enter]
+
+For example:
+8:30 9:10
+9:20 9:50
+10:00 10:40
+10:20 11:00
